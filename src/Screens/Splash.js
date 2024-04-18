@@ -21,8 +21,8 @@ const Splash = withGlobalize(memo(props => {
                 navigation.navigate('MainRoute');
             }
             else {
-                
-                navigation.navigate('Login');
+                navigation.navigate('MainRoute');
+                // navigation.navigate('Login');
             }
         }, 3000);
     };

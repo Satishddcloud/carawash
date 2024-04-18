@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/datetimepicker": "^7.6.2",
+    "@react-native-community/geolocation": "^3.2.1",
     "@react-native-community/netinfo": "^11.3.0",
     "@react-native-picker/picker": "^2.6.1",
     "@react-navigation/bottom-tabs": "^6.4.1",
@@ -31,6 +32,7 @@
     "react-native-elements": "^3.4.3",
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
+    "react-native-geocoding": "^0.5.0",
     "react-native-gesture-handler": "^2.15.0",
     "react-native-globalize": "^4.5.1",
     "react-native-linear-gradient": "^2.8.3",
