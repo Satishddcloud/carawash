@@ -1,0 +1,119 @@
+{
+    "app": {
+        "appName": "Samvaad LMS",
+        "noInternet": "No Internet connection. Make sure that Wi-Fi or mobile data is turned on,then try again",
+        "somethingWentWrong": "Something went wrong.Try Again later",
+        "logoutMsg": "Do you want to Logout ?",
+        "leaveSession": "Do you want to leave session ?"
+    },
+    "inputPlaceHolder": {
+       "userName": "Username",
+       "password": "Password",
+       "mobileNumber": "Mobile No",
+       "usernameEmail": "Username/Email ID",
+       "generateOTP": "Generate OTP",
+       "OTP": "OTP",
+       "resendOtp": "Resend Otp",
+       "enterOtp": "Enter Otp"
+    },
+    "inputValidation": {
+        "userNameValidation1": "Username can only contain a-z,0-9, _ , . and @",
+        "userNameValidation2": "Username cannot begin with _ or . and together",
+        "userNameValidation3": "Username can contain only 6 to 30 characters",
+        "usernameNotValid": "Username not valid",
+        "userNameRegExpValidation": "Username only contain a-z, 0-9, _ and . and must start with letter",
+        "userNameMin": "Username length should be greater than or equal to 6",
+        "userNameMax": "Username length should be less than 20",
+        "userNameReq": "Username is a required field",
+        "passwordRegExpValidation": "Password only contain a-z, 0-9, _ and must start with letter",
+        "passwordMin": "Password length should be greater than 6",
+        "passwordMax": "Password length should be less than 15",
+        "passwordReq": "password is a required field",
+        "mobileMatch": "Mobile number is not valid (must start with 6,7,8 9)",
+        "mobileRequired": "Mobile number is a required field",
+        "onlyDigit": "Only Digit",
+        "otpLength": "otp length should be equal to 6",
+        "otpRequired": "otp is a required field",
+        "otpSendMessage": "Enter the Otp which sent to mobile number"
+    },
+    "errorMsg": {
+        "somethingWentWrong": "Something went wrong",
+        "userNamePasswordWrong": "Username and password not correct",
+        "noUserFound": "No User found",
+        "somethingWrongTryAgain": "Something went wrong. Try Again"
+
+    },
+    "loginScreen": {
+        "login": "Login",
+        "forgotPassword": "Forgot Password ?",
+        "registerNow": "Register Now",
+        "parentLogin": "Parent Login",
+        "studentLogin": "Student Login",
+        "lmsLogin": "Samvaad LMS"
+    },
+    "homePage":{
+        "myDetails" : "My Details",
+        "otherDetails":"Other Details",
+        "parentDetails": "Parent/Guardian Details",
+        "parentName": "Guardian Name",
+        "relation": "Relation",
+        "contact_number": "Contact Number",
+        "relationship": "Relationship",
+        "email_address": "Email Address",
+        "onlineSession": "Online Sessions for today",
+        "sessionName": "Sessions Name",
+        "startTime": "Start Time",
+        "endTime": "End Time",
+        "joinSession": "Join Session",
+        "adminJoinSession":"AdminJoinSession",
+        "join": "join",
+        "classEnrolled": "Learning Materials",
+        "conference" :"Conference",
+        "assignment":"Assignments",
+        "assessment":"Assessment",
+        "configure":"Configure",
+        "teacherDetails": "Teacher Details",
+        "reports": "Reports",
+        "courseSetup":"CourseSetup",
+        "courseSchedule": "course Schedule",
+        "attendance":"Attendance",
+        "report": "Report",
+        "polls": "Polls",
+        "takePolls": "Take Poll",
+        "surveys": "Surveys",
+        "takeSurveys": "Take Survey",
+        "student": "Student",
+        "parent": "Parent"
+    },
+    "takePoll": {
+        "voteBtn": "Vote",
+        "selectAnswer": "Please select your answer",
+        "submitMessage": "Thanks for submit your valueable feedback."
+    },
+    "survey": {
+        "surveyQuestions": "Take Survey",
+        "continue": "Continue",
+        "next": "Next",
+        "submit": "Submit",
+        "questionTextInputPlaceholder": "Type here...",
+        "selected1Input": "Please select 1 option",
+        "selectedAtleastInput": "Please select atleast 1 option",
+        "enterAnswer": "Please enter your answer"
+    },
+    "faq": {
+        "title": "FAQ's"
+    },
+    "complaints": {
+        "complaints": "Complaints",
+        "raiseComplaint": "Raise Complaint"
+    },
+    "leaveApplication": {
+        "leaveApplication": "Leave Application",
+        "applyLeave": "Apply Leave"
+    },
+    "learningMaterials": {
+        "title": "My Learning Materials",
+        "gradeName": "Grade Name :",
+        "gradeScheduleName":"Grade Schedule :"
+    }
+}
