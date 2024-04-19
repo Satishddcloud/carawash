@@ -3,7 +3,6 @@ import React, {useState, memo} from 'react';
 import api from '../api';
 import IntlProvider from '../Constants/IntlProvider';
 import {withGlobalize} from 'react-native-globalize';
-import {saveUserProfileInfo} from '../Constants/AsyncStorageHelper';
 import Loader from '../Components/Loader';
 import * as yup from 'yup';
 import {Formik} from 'formik';
@@ -11,58 +10,32 @@ import {COLORS} from '../Constants/Color';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-export const SignUpFormInitialValues = props => ({
-  name: '',
-  email: '',
-  mobile: '',
-  password: '',
+export const ResetFormInitialValues = props => ({
+  oldPassword: '',
+  newPassword: '',
+  confirmPassword: '',
 
 });
 
-export const SignUpFormValidator = () => {
+export const ResetFormValidator = () => {
   return yup.object().shape({
-    name: yup.string().required('Name is Required'),
-    email: yup.string().required('Email Required'),
-    mobile: yup.string().required('Mobile number Required'),
-    password: yup.string().required('Password is required'),
+    oldPassword: yup.string().required('old password is Required'),
+    newPassword: yup.string().required('new password Required'),
+    confirmPassword: yup.string().required('confirm password Required'),
   });
 };
 
-const Register = withGlobalize(
+const ResetPassword = withGlobalize(
   memo(props => {
     const [loading, setLoading] = useState(false);
     const intl = IntlProvider(props);
     const navigation = useNavigation();
-
-    const Register = async values => {
-      setLoading(true);
-      const payload = {
-        email: values.email,
-        password: values.password,
-      };
-      try {
-        const res = await api.user.login(intl, payload);
-        console.log('response res', res.data);
-        if (res && res.status == 'OK') {
-          let userInfo = res.data;
-          await saveUserProfileInfo(userInfo);
-          navigation.navigate('Login');
-          setLoading(false);
-        } else {
-          setLoading(false);
-          alert('Invalid details');
-        }
-      } catch (e) {
-        console.log('error', e);
-        setLoading(false);
-      }
-    };
-
+ 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <Loader loading={loading}></Loader>
         <View style={{backgroundColor:COLORS.blue,padding:10,borderBottomRightRadius:10,borderBottomLeftRadius:10}}>
-          <View style={{flexDirection:'row',justifyContent:'space-between',margin:10}}>
+        <View style={{flexDirection:'row',justifyContent:'space-between',margin:10}}>
               <TouchableOpacity onPress={()=>{
                 navigation.goBack()
               }}>
@@ -74,13 +47,13 @@ const Register = withGlobalize(
                style={{width:120,height:50}}
                />
           </View>
-          <Text style={{fontSize:20,fontWeight:'bold',color:COLORS.white,margin:5}}>Sign up</Text>
-          <Text style={{color:COLORS.white,margin:5}}>Add your email and password to create an account</Text>
+          <Text style={{fontSize:20,fontWeight:'bold',color:COLORS.white,margin:5}}>Reset Password</Text>
+          <Text style={{color:COLORS.white,margin:5}}>Reset your  password for login</Text>
         </View>
         <ScrollView>
         <Formik
-          initialValues={SignUpFormInitialValues(props)}
-          // validationSchema={SignUpFormValidator}
+          initialValues={ResetFormInitialValues(props)}
+          // validationSchema={ResetFormValidator}
           onSubmit={(values, {resetForm}) => {
             console.log(values);
             navigation.navigate('Login');
@@ -103,29 +76,20 @@ const Register = withGlobalize(
                   flex: 1,
                   marginBottom:20,marginTop:20
                 }}>
-                  <Text style={{color:COLORS.black,padding:10}}>Name</Text>
-                    <TextInput
-                      value={values.name}
-                      placeholder="Enter name"
-                      onChangeText={text => {
-                        setFieldValue('name', text);
-                      }}
-                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
-                    />
 
-                   <Text style={{color:COLORS.black,padding:10}}>Email</Text>
+                   <Text style={{color:COLORS.black,padding:10}}>Old Password</Text>
                     <TextInput
-                      value={values.email}
-                      placeholder="Enter email"
+                      value={values.oldPassword}
+                      placeholder="Enter old password"
                       onChangeText={text => {
                         setFieldValue('email', text);
                       }}
                       style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
                     />
-                  <Text style={{color:COLORS.black,padding:10}}>Phone Number </Text>
+                  <Text style={{color:COLORS.black,padding:10}}>New Password </Text>
                     <TextInput
-                      value={values.mobile}
-                      placeholder="Enter phone number"
+                      value={values.newPassword}
+                      placeholder="Enter new password"
                       onChangeText={text => {
                         setFieldValue('mobile', text);
                       }}
@@ -133,8 +97,8 @@ const Register = withGlobalize(
                     />
                    <Text style={{color:COLORS.black,padding:10}}>Password</Text>
                     <TextInput
-                      value={values.password}
-                      placeholder="Enter password"
+                      value={values.confirmPassword}
+                      placeholder="Enter confirm password"
                       onChangeText={text => {
                         setFieldValue('password', text);
                       }}
@@ -154,17 +118,9 @@ const Register = withGlobalize(
                       handleSubmit();
                     }}>
                     <Text style={{alignSelf: 'center', color: COLORS.white}}>
-                      Sign Up
+                      Reset Passowrd
                     </Text>
                   </TouchableOpacity>
-                   <View >
-                  <Text style={{margin:10,alignSelf:'center'}}>Have an accout ?</Text>
-                  <TouchableOpacity onPress={()=>{
-                      navigation.navigate('Login')
-                    }} >
-                      <Text style={{color:COLORS.orange,margin:5,alignSelf:'center',fontWeight:'bold'}}>SIGN IN</Text>
-                    </TouchableOpacity>
-                    </View>
               </View>
             </>
           )}
@@ -175,4 +131,4 @@ const Register = withGlobalize(
   }),
 );
 
-export default Register;
+export default ResetPassword;

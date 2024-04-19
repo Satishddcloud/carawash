@@ -7,6 +7,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Splash from '../Screens/Splash';
 import Register from '../Screens/Register';
 import MainRoute from './MainRoute';
+import ResetPassword from '../Screens/ResetPassword';
+import ForgetPassword from '../Screens/ForgetPassword';
 
 
 
@@ -18,8 +20,10 @@ const AuthRoute = () => {
     <NavigationContainer>
     <Stack.Navigator  screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Splash" component={Splash} />
-     {/* <Stack.Screen name="Login" component={Login} />
-     <Stack.Screen name="Register" component={Register} /> */}
+     <Stack.Screen name="Login" component={Login} />
+     <Stack.Screen name="Register" component={Register} />
+     <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+     <Stack.Screen name="ResetPassword" component={ResetPassword} />
      <Stack.Screen name="MainRoute" component={MainRoute} />
 
    </Stack.Navigator>
