@@ -9,6 +9,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { COLORS } from '../Constants/Color';
 import Vechiles from '../Screens/Vechiles';
+import TopTabs from './TopTabs';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,7 +48,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="Bookings"
-        component={Bookings}
+        component={TopTabs}
         options={{
           tabBarIcon: ({focused}) => {
             return (

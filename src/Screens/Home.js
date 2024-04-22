@@ -139,6 +139,9 @@ const getAddress = async (latitude, longitude)=>{
   const Item1 = ({item}) =>{
     return(
       <View style={{margin:10,alignSelf:'center',flex:1,backgroundColor:'#FFFFFF',borderRadius:5}}>
+        <TouchableOpacity onPress={()=>{
+          navigation.navigate('Services',{item:item})
+        }}>
         <Image
           source={item.image}
           style={{height:150,borderRadius:10,width:300}}
@@ -155,6 +158,7 @@ const getAddress = async (latitude, longitude)=>{
           <Text style={{alignSelf:'center',color:COLORS.white}}>ADD</Text>
         </TouchableOpacity>
         </View>
+        </TouchableOpacity>
       </View>
     )
   }
