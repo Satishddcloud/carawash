@@ -15,9 +15,9 @@ const Splash = withGlobalize(memo(props => {
 
     const navigationStep = async () => {
         const userObject = await getUserProfileInfo();
-        console.log(userObject)
+        console.log('userObject',userObject)
         setTimeout(() => {
-            if (isObject(userObject) && !isNullOrUndefined(userObject.USERID)) {
+            if (isObject(userObject) && !isNullOrUndefined(userObject.id)) {
                 navigation.navigate('MainRoute');
             }
             else {

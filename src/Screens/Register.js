@@ -10,21 +10,23 @@ import {Formik} from 'formik';
 import {COLORS} from '../Constants/Color';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { API_BASE_URL } from '../api/ApiClient';
 
 export const SignUpFormInitialValues = props => ({
   name: '',
   email: '',
   mobile: '',
   password: '',
-
+  confirmPassword:''
 });
 
 export const SignUpFormValidator = () => {
   return yup.object().shape({
     name: yup.string().required('Name is Required'),
     email: yup.string().required('Email Required'),
-    mobile: yup.string().required('Mobile number Required'),
+    mobile: yup.string().required('Mobile number is Required'),
     password: yup.string().required('Password is required'),
+    confirmPassword: yup.string().required('Confirm Password is required'),
   });
 };
 
@@ -34,28 +36,44 @@ const Register = withGlobalize(
     const intl = IntlProvider(props);
     const navigation = useNavigation();
 
-    const Register = async values => {
+    const SignUp = async values => {
       setLoading(true);
-      const payload = {
-        email: values.email,
-        password: values.password,
+      const myHeaders = new Headers();
+      myHeaders.append('Accept', 'application/json');
+
+      const formdata = new FormData();
+      formdata.append("name", `${values.name}`);
+      formdata.append("email", `${values.email}`);
+      formdata.append("mobile", `${values.mobile}`);
+      formdata.append("password", `${values.password}`);
+      formdata.append("password_confirmation", `${values.confirmPassword}`);
+
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow"
       };
-      try {
-        const res = await api.user.login(intl, payload);
-        console.log('response res', res.data);
-        if (res && res.status == 'OK') {
-          let userInfo = res.data;
-          await saveUserProfileInfo(userInfo);
-          navigation.navigate('Login');
-          setLoading(false);
-        } else {
-          setLoading(false);
-          alert('Invalid details');
-        }
-      } catch (e) {
-        console.log('error', e);
-        setLoading(false);
-      }
+      // console.log(formdata)
+      fetch(`${API_BASE_URL}/api/register`, requestOptions)
+        .then((response) => response.text())
+        .then(async(result) => {
+          console.log(result)
+          const res = JSON.parse(result)
+          console.log(res)
+          if(res && res.status == true){
+              alert(res.message)
+              navigation.navigate('Login');
+          }else{
+            alert(res.message)
+          }
+          setLoading(false)
+        })
+        .catch((error) =>{
+           console.error(error)
+           setLoading(false)
+          });   
+  
     };
 
     return (
@@ -80,11 +98,10 @@ const Register = withGlobalize(
         <ScrollView>
         <Formik
           initialValues={SignUpFormInitialValues(props)}
-          // validationSchema={SignUpFormValidator}
+          validationSchema={SignUpFormValidator}
           onSubmit={(values, {resetForm}) => {
             console.log(values);
-            navigation.navigate('Login');
-            // Register(values, resetForm());
+            SignUp(values);
           }}>
           {({
             values,
@@ -112,7 +129,9 @@ const Register = withGlobalize(
                       }}
                       style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
                     />
-
+                     {errors.name &&
+                         <Text style={{ fontSize: 10, color: 'red' }}>* {errors.name}</Text>
+                      }
                    <Text style={{color:COLORS.black,padding:10}}>Email</Text>
                     <TextInput
                       value={values.email}
@@ -122,6 +141,9 @@ const Register = withGlobalize(
                       }}
                       style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
                     />
+                    {errors.email &&
+                         <Text style={{ fontSize: 10, color: 'red' }}>* {errors.email}</Text>
+                      }
                   <Text style={{color:COLORS.black,padding:10}}>Phone Number </Text>
                     <TextInput
                       value={values.mobile}
@@ -131,6 +153,9 @@ const Register = withGlobalize(
                       }}
                       style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
                     />
+                    {errors.mobile &&
+                         <Text style={{ fontSize: 10, color: 'red' }}>* {errors.mobile}</Text>
+                      }
                    <Text style={{color:COLORS.black,padding:10}}>Password</Text>
                     <TextInput
                       value={values.password}
@@ -140,7 +165,21 @@ const Register = withGlobalize(
                       }}
                       style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
                     />
-                   
+                   {errors.password &&
+                         <Text style={{ fontSize: 10, color: 'red' }}>* {errors.password}</Text>
+                      }
+                       <Text style={{color:COLORS.black,padding:10}}> Confirm Password</Text>
+                    <TextInput
+                      value={values.confirmPassword}
+                      placeholder="Enter confirm password"
+                      onChangeText={text => {
+                        setFieldValue('confirmPassword', text);
+                      }}
+                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
+                    />
+                   {errors.confirmPassword &&
+                         <Text style={{ fontSize: 10, color: 'red' }}>* {errors.confirmPassword}</Text>
+                      }
                   <TouchableOpacity
                     style={{
                       backgroundColor:COLORS.orange,
@@ -151,7 +190,12 @@ const Register = withGlobalize(
                       marginTop: 20,
                     }}
                     onPress={() => {
-                      handleSubmit();
+                      if(values.password == values.confirmPassword){
+                        handleSubmit();
+                      }else{
+                        alert('Passwords are not matched')
+                      }
+                     
                     }}>
                     <Text style={{alignSelf: 'center', color: COLORS.white}}>
                       Sign Up

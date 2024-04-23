@@ -5,7 +5,7 @@ import { isObject, isArray, isString } from 'util';
 import Config from 'react-native-config';
 import { getUserProfileInfo } from '../Constants/AsyncStorageHelper';
 
-export const API_BASE_URL = "" //DEV
+export const API_BASE_URL = "https://testmodel.co.in/carwash" //DEV
 
 export default class ApiClient {
     constructor(prefix = '/api') {

@@ -3,13 +3,16 @@ import React, {useState, memo} from 'react';
 import api from '../api';
 import IntlProvider from '../Constants/IntlProvider';
 import {withGlobalize} from 'react-native-globalize';
-import {saveUserProfileInfo} from '../Constants/AsyncStorageHelper';
+import {saveUserProfileInfo, setJwtToken} from '../Constants/AsyncStorageHelper';
 import Loader from '../Components/Loader';
 import * as yup from 'yup';
 import {Formik} from 'formik';
 import {COLORS} from '../Constants/Color';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { API_BASE_URL } from '../api/ApiClient';
+import { useDispatch } from 'react-redux';
+import { setuser } from '../Redux/reducer/User';
 
 export const LoginFormInitialValues = props => ({
   email: '',
@@ -18,7 +21,7 @@ export const LoginFormInitialValues = props => ({
 
 export const LoginFormValidator = () => {
   return yup.object().shape({
-    email: yup.string().required('UserName Required'),
+    email: yup.string().required('Email is Required'),
     password: yup.string().required('Password is required'),
   });
 };
@@ -28,30 +31,77 @@ const Login = withGlobalize(
     const [loading, setLoading] = useState(false);
     const intl = IntlProvider(props);
     const navigation = useNavigation();
+   const dispatch = useDispatch()
 
     const Login = async values => {
       setLoading(true);
-      const payload = {
-        userName: values.email,
-        password: values.password,
+      const myHeaders = new Headers();
+      
+      const formdata = new FormData();
+      formdata.append("email", `${values.email}`);
+      formdata.append("password", `${values.password}`);
+      
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow"
       };
-      try {
-        const res = await api.user.login(intl, payload);
-        console.log('response res', res.data);
-        if (res && res.status == 'OK') {
-          let userInfo = res.data;
-          await saveUserProfileInfo(userInfo);
-          navigation.navigate('MainRoute');
-          setLoading(false);
-        } else {
-          setLoading(false);
-          alert('Invalid username or password');
-        }
-      } catch (e) {
-        console.log('error', e);
-        setLoading(false);
-      }
+      
+      fetch(`${API_BASE_URL}/api/login`, requestOptions)
+        .then((response) => response.text())
+        .then(async(result) => {
+          const res = JSON.parse(result)
+          console.log(res)
+          if(res && res.status == true){
+            const token = res.token
+               getProfile(token)
+              await setJwtToken(token)
+              alert(res.message)
+          }else{
+            alert(res.message)
+          }
+          setLoading(false)
+        })
+        .catch((error) =>{
+           console.error(error)
+           setLoading(false)
+          });   
     };
+
+    const getProfile = async (token)=>{
+         setLoading(true)
+         const myHeaders = new Headers();
+         myHeaders.append("Accept", "application/json");
+         myHeaders.append("Authorization", `Bearer ${token}`);
+         const requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow"
+        };
+        
+        fetch(`${API_BASE_URL}/api/profile`, requestOptions)
+          .then((response) => response.text())
+          .then(async(result) =>{
+            //  console.log(result)
+            const res= JSON.parse(result)
+             if(res && res.status == true){
+              console.log(res.data)
+              const userdata = res.data
+              await saveUserProfileInfo(userdata)
+              dispatch(setuser(userdata))
+              navigation.reset({
+               index: 0,
+               routes: [{ name: "MainRoute" }],
+              })
+             }
+             setLoading(false)
+            })
+          .catch((error) =>{
+            console.error(error)
+            setLoading(false)
+           }); 
+    }
 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -69,11 +119,10 @@ const Login = withGlobalize(
       <ScrollView>
       <Formik
         initialValues={LoginFormInitialValues(props)}
-        // validationSchema={LoginFormValidator}
+        validationSchema={LoginFormValidator}
         onSubmit={(values, {resetForm}) => {
           console.log(values);
-          navigation.navigate('MainRoute');
-          // Register(values, resetForm());
+          Login(values);
         }}>
         {({
           values,
@@ -102,7 +151,9 @@ const Login = withGlobalize(
                     }}
                     style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
                   />
-               
+                   {errors.email &&
+                         <Text style={{ fontSize: 10, color: 'red' }}>* {errors.email}</Text>
+                      }
                  <Text style={{color:COLORS.black,padding:10}}>Password</Text>
                   <TextInput
                     value={values.password}
@@ -112,7 +163,9 @@ const Login = withGlobalize(
                     }}
                     style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
                   />
-                 
+                 {errors.password &&
+                      <Text style={{ fontSize: 10, color: 'red' }}> * {errors.password}</Text>
+                  }
                 <TouchableOpacity
                   style={{
                     backgroundColor:COLORS.orange,

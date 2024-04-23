@@ -40,7 +40,7 @@ export const getJwtToken = async () => {
   };
   
   export const setJwtToken = async jwtToken => {
-    await AsyncStorage.setItem(JWT_TOKEN, jwtToken);
+    await AsyncStorage.setItem(JWT_TOKEN, `${jwtToken}`);
   };
   export const saveMobileNumber = async (mobile_number) => {
     await AsyncStorage.setItem(MOBILE_NUMBER, mobile_number)

@@ -8,6 +8,8 @@ import { COLORS } from '../Constants/Color';
 import { Badge } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Geolocation from '@react-native-community/geolocation';
+import Loader from '../Components/Loader';
+import { API_BASE_URL } from '../api/ApiClient';
 
 const { width, height } = Dimensions.get('window');
 
@@ -16,6 +18,8 @@ const Home = () => {
   const navigation = useNavigation();
   const [location, setLocation] = useState('...Loading');
   const [error, setError] = useState(null);
+  const [loading,setLoading]=useState(false)
+  const [services,setServices]=useState([])
   
   const scrollRef = useRef(null)
   const next = () => {
@@ -124,14 +128,46 @@ const getAddress = async (latitude, longitude)=>{
   }
 }
 
+const getServices = async ()=>{
+  setLoading(true)
+  const myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow',
+  };
+
+  fetch(`${API_BASE_URL}/api/services`, requestOptions)
+  .then((response) => response.text())
+  .then(async(result) =>{
+    const res= JSON.parse(result)
+     console.log(res)
+     if(res && res.data.length > 0){
+      setServices(res.data)
+     }
+    setLoading(false)
+  })
+.catch((error) =>{
+  console.error(error)
+  setLoading(false)
+ }); 
+}
+
+  useEffect(()=>{
+    getServices()
+  },[])
+
   const Item = ({item}) =>{
+    console.log(item.image,item.name)
     return(
       <View style={{margin:10,alignSelf:'center',}}>
         <Image
-          source={item.image}
-          style={{}}
+          source={{uri:item.image}}
+          style={{width:80,height:70,borderRadius:5,alignSelf:'center'}}
         />
-        <Text style={{color:COLORS.black,alignSelf:'center',fontSize:10,margin:5}}>{item.name}</Text>
+        <Text style={{color:COLORS.black,alignSelf:'center',fontSize:10,margin:5,width:90}}>{item.name}</Text>
       </View>
     )
   }
@@ -165,6 +201,7 @@ const getAddress = async (latitude, longitude)=>{
 
   return (
     <View style={{flex:1}}>
+      <Loader loading={loading}></Loader>
       <View style={{padding:10,backgroundColor:COLORS.blue,}}>
         <View style={{flexDirection:'row',marginTop:10}}>
            <Entypo
@@ -227,7 +264,7 @@ const getAddress = async (latitude, longitude)=>{
       <View style={{alignSelf:'center',flex:1}}>
          <FlatList
          numColumns={3}
-         data={data || []}
+         data={services || []}
          renderItem={Item}
          keyExtractor = {item => item.id}
          />
