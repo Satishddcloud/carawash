@@ -162,12 +162,14 @@ const getServices = async ()=>{
   const Item = ({item}) =>{
     console.log(item.image,item.name)
     return(
-      <View style={{margin:10,alignSelf:'center',}}>
+      <View style={{margin:10,alignSelf:'center'}}>
+        <TouchableOpacity onPress={()=>{navigation.navigate('Services',{item:item})}}>
         <Image
           source={{uri:item.image}}
           style={{width:80,height:70,borderRadius:5,alignSelf:'center'}}
         />
-        <Text style={{color:COLORS.black,alignSelf:'center',fontSize:10,margin:5,width:90}}>{item.name}</Text>
+        <Text style={{color:COLORS.black,alignSelf:'center',fontSize:10,margin:5}}>{item.name}</Text>
+        </TouchableOpacity>
       </View>
     )
   }

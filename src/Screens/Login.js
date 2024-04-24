@@ -122,7 +122,9 @@ const Login = withGlobalize(
         validationSchema={LoginFormValidator}
         onSubmit={(values, {resetForm}) => {
           console.log(values);
-          Login(values);
+          // navigation.navigate('MainRoute');
+          navigation.navigate('OtpForMail')
+          // Register(values, resetForm());
         }}>
         {({
           values,

@@ -15,5 +15,8 @@ export const COLORS = {
     orange:'#FF5501',
     blue:'#051E45',
     liteBlack : '#0e293547',
+    medBlack:'#1E1E1E',
+    medgrey:'#ECECEC',
+    lgrey:'#989898',
     gradient : ['#268281','#779f92','#a2af9c']
 }

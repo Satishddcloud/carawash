@@ -104,7 +104,12 @@ const data = [
         // useNativeDriver={true}
         customStyles={{
           wrapper: {
-            backgroundColor: 'transparent',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 1000, 
+                          },
+          container: {
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25,
           },
           draggableIcon: {
             backgroundColor: '#000',
@@ -118,14 +123,16 @@ const data = [
         // customAvoidingViewProps={{
         //   enabled: false,
         // }}
-        height={400}
+        height={730}
         >
-        <View>
+        <View >
         <TouchableOpacity style={{}}
             onPress={()=>{
                 refRBSheet.current.close()
             }}>
-            <Text>close</Text>
+              <View style={{position:'absolute',zIndex:100,right:50}}>
+            <Text  style={{marginLeft:15,fontSize:25}}>close</Text>
+            </View>
             </TouchableOpacity>
            
         <Text style={{color:COLORS.black,fontWeight:'bold',margin:5}}>{'basic detsils'}</Text>

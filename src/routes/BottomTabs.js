@@ -10,6 +10,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { COLORS } from '../Constants/Color';
 import Vechiles from '../Screens/Vechiles';
 import TopTabs from './TopTabs';
+import SelectService from '../Screens/SelectService';
 
 const Tab = createBottomTabNavigator();
 
@@ -66,7 +67,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="My Vechiles"
-        component={Vechiles}
+        component={SelectService}
         options={{
           tabBarIcon: ({focused}) => {
             return (

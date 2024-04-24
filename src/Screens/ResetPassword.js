@@ -56,7 +56,7 @@ const ResetPassword = withGlobalize(
           // validationSchema={ResetFormValidator}
           onSubmit={(values, {resetForm}) => {
             console.log(values);
-            navigation.navigate('Login');
+            navigation.navigate('Reset');
             // Register(values, resetForm());
           }}>
           {({

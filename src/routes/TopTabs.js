@@ -1,4 +1,3 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -7,6 +6,8 @@ import Completed from '../Screens/Completed';
 import Cancelled from '../Screens/Cancelled';
 import { COLORS } from '../Constants/Color';
 import { useNavigation } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
 
 const Tab = createMaterialTopTabNavigator();
 
