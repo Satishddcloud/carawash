@@ -66,7 +66,7 @@ const DateTime = () => {
           />
         )}
 
-        <TouchableOpacity style={styles.proceedButton} onPress={()=>navigation.navigate('TermsAndConditions',{show:true})}>
+        <TouchableOpacity style={styles.proceedButton} onPress={()=>navigation.navigate('Payments',{show:true})}>
           <Text style={styles.proceedButtonText}>Proceed to Book</Text>
         </TouchableOpacity>
       </View>

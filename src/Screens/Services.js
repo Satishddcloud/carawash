@@ -1,17 +1,18 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useRef } from 'react';
-import { View, Text,ImageBackground,FlatList,TouchableOpacity,StyleSheet,Image } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Text,ImageBackground,FlatList,TouchableOpacity,StyleSheet,Image, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { COLORS } from '../Constants/Color';
 import RBSheet from 'react-native-raw-bottom-sheet';
-
+import Entypo from 'react-native-vector-icons/Entypo'
 
 const Services = () => {
    const route = useRoute()
    const {item} = route.params;
    const navigation = useNavigation()
    const refRBSheet = useRef();
+   const [details,setDetails]=useState('')
 //   console.log(item)
 
 const data = [
@@ -42,6 +43,7 @@ const data = [
         <TouchableOpacity style={{margin:5,borderWidth:0.5,borderRadius:20,borderColor:COLORS.black,width:100,marginLeft:10,padding:5}}
         onPress={()=>{
             refRBSheet.current.open()
+            setDetails(item)
         }}>
           <Text style={{alignSelf:'center',color:COLORS.orange}}>View Details</Text>
         </TouchableOpacity>
@@ -123,25 +125,70 @@ const data = [
         // customAvoidingViewProps={{
         //   enabled: false,
         // }}
-        height={730}
+        height={600}
         >
-        <View >
+        <ScrollView style={{flex:1}}>
+
         <TouchableOpacity style={{}}
             onPress={()=>{
                 refRBSheet.current.close()
             }}>
-              <View style={{position:'absolute',zIndex:100,right:50}}>
-            <Text  style={{marginLeft:15,fontSize:25}}>close</Text>
-            </View>
+              <Entypo
+              name={'cross'}
+              size={30}
+              style={{alignSelf:'flex-end',margin:5,marginRight:20,color:COLORS.black}}
+              />
             </TouchableOpacity>
-           
-        <Text style={{color:COLORS.black,fontWeight:'bold',margin:5}}>{'basic detsils'}</Text>
+           <View style={{padding:5}}>
+
+        <Text style={{color:COLORS.black,fontWeight:'bold',margin:5,fontSize:20}}>{details.name}</Text>
         <View style={{flexDirection:'row'}}>
-        <Text style={{color:COLORS.black,fontWeight:'bold',}}> ₹ {'1400'}</Text>
+        <Text style={{color:COLORS.black,fontWeight:'bold',}}> ₹ {details.amount}</Text>
         <View style={styles.dot} />
-        <Text style={{alignSelf:'center'}}> {'5 min'}</Text>
+        <Text style={{alignSelf:'center'}}> {details.time}</Text>
         </View>
-        </View>
+
+        <TouchableOpacity style={{alignSelf:'flex-end',bottom:20,}}>
+          <Text style={{color:COLORS.orange,marginRight:20}}>Add</Text>
+        </TouchableOpacity>
+
+        <Text style={{alignSelf:"center"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.Vivamus ultricies metus sed mi placerat semper.</Text>
+        <View style={{ width: '95%',height: 2, backgroundColor: 'lightgrey',alignSelf: 'center',margin: 10,}}/>
+
+       <View style={{padding:5,}}>
+        <Text style={{color:COLORS.black,marginLeft:10,fontWeight:'bold'}}>What's included</Text>
+       <Text style={{marginLeft:10,color:COLORS.black}}>.Every 500 kms/3 Months</Text>
+        <Text style={{marginLeft:10,color:COLORS.black}}>.Take 4 hours</Text>
+        <Text style={{marginLeft:10,color:COLORS.black}}>.Shampoo  Cleaning</Text>
+        <Text style={{marginLeft:10,color:COLORS.black}}>.Every 500 kms/3 Months</Text>
+        <Text style={{marginLeft:10,color:COLORS.black}}>.Take 4 hours</Text>
+        <Text style={{marginLeft:10,color:COLORS.black}}>.Shampoo  Cleaning</Text>
+       </View>
+
+       <View style={{ width: '95%',height: 2, backgroundColor: 'lightgrey',alignSelf: 'center',margin: 10,}}/>
+
+       <View style={{padding:5,}}>
+        <Text style={{color:COLORS.black,marginLeft:10,fontWeight:'bold'}}>Point's to note</Text>
+       <Text style={{marginLeft:10,color:COLORS.black}}>.Lorem ipsum dolor sit amet, consectetur .</Text>
+        <Text style={{marginLeft:10,color:COLORS.black}}>.Vivamus ultricies metus sed mi placerat semper.</Text>
+        <Text style={{marginLeft:10,color:COLORS.black}}>.Lorem ipsum dolor sit amet, consectetur .</Text>
+        <Text style={{marginLeft:10,color:COLORS.black}}>.Vivamus ultricies metus sed mi placerat semper.</Text>
+        <Text style={{marginLeft:10,color:COLORS.black}}>.Lorem ipsum dolor sit amet, consectetur .</Text>
+        <Text style={{marginLeft:10,color:COLORS.black}}>.Vivamus ultricies metus sed mi placerat semper.</Text>
+       </View>
+
+         </View>
+
+         <View style={{flex:1,marginTop:50}}>
+         <TouchableOpacity style={{padding:15,borderRadius:20,alignSelf:'center',backgroundColor:COLORS.orange,width:300}}
+         onPress={()=>{
+          navigation.navigate('SelectService')
+         }}>
+          <Text style={{alignSelf:'center',color:COLORS.white}}>Add to cart</Text>
+         </TouchableOpacity>
+         </View>
+        
+        </ScrollView>
       </RBSheet>
     </View>
   );

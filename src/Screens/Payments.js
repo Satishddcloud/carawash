@@ -69,7 +69,7 @@ const Payments = () => {
       <View style={{marginBottom:'8%'}}>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handlePress()}>
+        onPress={() => navigation.navigate('SelectBrand')}>
         <Text style={styles.text}>Pay Now</Text>
       </TouchableOpacity>
       </View>

@@ -11,12 +11,7 @@ import ResetPassword from '../Screens/ResetPassword';
 import ForgetPassword from '../Screens/ForgetPassword';
 import OtpForMail from '../Screens/OtptoMail';
 import Reset from '../Screens/Reset';
-import Profile from '../Screens/Profile';
-import AddtoCart from '../Screens/AddtoCart';
-import SelectService from '../Screens/SelectService';
-import DateTime from '../Screens/DateTime';
-import TermsAndConditions from '../Screens/TermsAndConditions';
-import Payments from '../Screens/Payments';
+
 
 
 
@@ -34,12 +29,6 @@ const AuthRoute = () => {
      <Stack.Screen name="ResetPassword" component={ResetPassword} />
      <Stack.Screen name="OtpForMail" component={OtpForMail} />
      <Stack.Screen name="Reset" component={Reset} />
-     <Stack.Screen name="Profile" component={Profile} />
-     <Stack.Screen name="AddtoCart" component={AddtoCart} />
-     <Stack.Screen name="SelectService" component={SelectService} />
-     <Stack.Screen name="DateTime" component={DateTime} />
-     <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
-     <Stack.Screen name="Payments" component={Payments} />
      <Stack.Screen name="MainRoute" component={MainRoute} />
 
    </Stack.Navigator>

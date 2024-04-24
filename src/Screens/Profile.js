@@ -13,6 +13,7 @@ import {withGlobalize} from 'react-native-globalize';
 import {
   getUserProfileInfo,
   saveUserProfileInfo,
+  setJwtToken,
 } from '../Constants/AsyncStorageHelper';
 import Loader from '../Components/Loader';
 import * as yup from 'yup';
@@ -21,6 +22,8 @@ import {COLORS} from '../Constants/Color';
 import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Avatar} from 'react-native-paper';
+import { logout } from '../Redux/reducer/User';
+import { useDispatch } from 'react-redux';
 
 export const LoginFormInitialValues = props => ({
   email: '',
@@ -39,6 +42,7 @@ const Profile = withGlobalize(
     const [loading, setLoading] = useState(false);
     const intl = IntlProvider(props);
     const navigation = useNavigation();
+    const dispatch = useDispatch()
 
     const handleSubmit = async values => {
       const resp = await getUserProfileInfo();
@@ -80,6 +84,13 @@ const Profile = withGlobalize(
           setLoading(false);
         });
     };
+
+    const Logout = async ()=>{
+      await saveUserProfileInfo({});
+      await setJwtToken(null)
+      dispatch(logout());
+      navigation.navigate('Login')
+    }
 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -283,15 +294,16 @@ const Profile = withGlobalize(
 
                   <TouchableOpacity
                     style={{
-                      backgroundColor: COLORS.orange,
-                      borderRadius: 30,
-                      padding: 15,
+                      backgroundColor: COLORS.blue,
+                      borderRadius: 10,
+                      padding: 10,
                       width: 300,
                       alignSelf: 'center',
                       marginTop: 20,
                     }}
                     onPress={() => {
-                      handleSubmit();
+                      // handleSubmit();
+                      Logout()
                     }}>
                     <Text style={{alignSelf: 'center', color: COLORS.white}}>
                       LogOut{' '}

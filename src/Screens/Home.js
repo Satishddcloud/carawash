@@ -162,13 +162,13 @@ const getServices = async ()=>{
   const Item = ({item}) =>{
     console.log(item.image,item.name)
     return(
-      <View style={{margin:10,alignSelf:'center'}}>
+      <View style={{margin:5,alignSelf:'center',}}>
         <TouchableOpacity onPress={()=>{navigation.navigate('Services',{item:item})}}>
         <Image
           source={{uri:item.image}}
           style={{width:80,height:70,borderRadius:5,alignSelf:'center'}}
         />
-        <Text style={{color:COLORS.black,alignSelf:'center',fontSize:10,margin:5}}>{item.name}</Text>
+        <Text style={{color:COLORS.black,alignSelf:'center',fontSize:10,margin:5,width:100}}>{item.name}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -263,7 +263,7 @@ const getServices = async ()=>{
         />
       </View>
       <Text style={{margin:10,color:COLORS.black,fontSize:17,fontWeight:'bold',marginTop:30}}>Choose Services</Text>
-      <View style={{alignSelf:'center',flex:1}}>
+      <View style={{flex:1,alignSelf:'center',}}>
          <FlatList
          numColumns={3}
          data={services || []}

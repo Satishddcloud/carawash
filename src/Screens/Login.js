@@ -122,9 +122,7 @@ const Login = withGlobalize(
         validationSchema={LoginFormValidator}
         onSubmit={(values, {resetForm}) => {
           console.log(values);
-          // navigation.navigate('MainRoute');
-          navigation.navigate('OtpForMail')
-          // Register(values, resetForm());
+          Login(values, resetForm());
         }}>
         {({
           values,
@@ -168,9 +166,16 @@ const Login = withGlobalize(
                  {errors.password &&
                       <Text style={{ fontSize: 10, color: 'red' }}> * {errors.password}</Text>
                   }
+
+                 <TouchableOpacity onPress={()=>{
+                    navigation.navigate('ForgetPassword')
+                  }} style={{alignSelf:'flex-end'}}>
+                    <Text style={{color:COLORS.blue,margin:5,alignSelf:'center',fontWeight:'bold'}}>Forget Password ?</Text>
+                  </TouchableOpacity>
+
                 <TouchableOpacity
                   style={{
-                    backgroundColor:COLORS.orange,
+                    backgroundColor:COLORS.blue,
                     borderRadius: 30,
                     padding: 15,
                     width: 300,
@@ -184,24 +189,12 @@ const Login = withGlobalize(
                     Sign In
                   </Text>
                 </TouchableOpacity>
-                 <View >
+                 <View style={{marginTop:100}}>
                 <Text style={{margin:10,alignSelf:'center'}}>You don't have an accout ?</Text>
                 <TouchableOpacity onPress={()=>{
                     navigation.navigate('Register')
                   }} >
-                    <Text style={{color:COLORS.orange,margin:5,alignSelf:'center',fontWeight:'bold'}}>SIGN UP</Text>
-                  </TouchableOpacity>
-                  </View>
-                  <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:30}}>
-                  <TouchableOpacity onPress={()=>{
-                    navigation.navigate('ForgetPassword')
-                  }} >
-                    <Text style={{color:COLORS.orange,margin:5,alignSelf:'center',fontWeight:'bold'}}>Forget Password ?</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={()=>{
-                    navigation.navigate('ResetPassword')
-                  }} >
-                    <Text style={{color:COLORS.orange,margin:5,alignSelf:'center',fontWeight:'bold'}}>Reset Password ?</Text>
+                    <Text style={{color:COLORS.blue,margin:5,alignSelf:'center',fontWeight:'bold'}}>SIGN UP</Text>
                   </TouchableOpacity>
                   </View>
             </View>

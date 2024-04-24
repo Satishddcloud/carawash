@@ -68,7 +68,7 @@ const OtpForMail = withGlobalize(
           <Text style={{color: COLORS.lgrey, margin: 5}}>
             We sent a reset link to
           </Text>
-          <Text style={{color: COLORS.medBlack, left: '41%', bottom: 25}}>
+          <Text style={{color: COLORS.medBlack, left: '45%', bottom: 25}}>
             contact@dscode...com
           </Text>
           <Text style={{color: COLORS.lgrey, marginLeft: 5}}>
@@ -108,7 +108,7 @@ const OtpForMail = withGlobalize(
             marginTop: 20,
           }}
           onPress={() => {
-            navigation.navigate('AddtoCart');
+            navigation.navigate('Reset');
           }}>
           <Text style={{alignSelf: 'center', color: COLORS.white}}>
             Verify Code{' '}
@@ -123,7 +123,7 @@ const OtpForMail = withGlobalize(
           <Text style={{color: COLORS.lgrey, margin: 10}}>
             Haven’t got the email yet?
           </Text>
-          <Text style={{color: COLORS.blue, marginTop: 10}}>Resend email</Text>
+          <Text style={{color: COLORS.blue, marginTop: 10,fontWeight:'bold'}}>Resend email</Text>
         </View>
       </View>
     );

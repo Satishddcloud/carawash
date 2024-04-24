@@ -12,7 +12,7 @@ const TermsAndConditions = () => {
 
 
   const handlePress=()=>{
-    navigation.navigate('Payments')
+    navigation.navigate('DateTime')
     refRBSheet.current.close()
   }
 

@@ -81,7 +81,7 @@ const Reset = withGlobalize(
             marginTop: 20,
           }}
           onPress={() => {
-            navigation.navigate('Profile');
+            navigation.navigate('ResetPassword');
           }}>
           <Text style={{alignSelf: 'center',textAlign:'center',color: COLORS.white}}>
             confirm{' '}

@@ -182,7 +182,7 @@ const Register = withGlobalize(
                       }
                   <TouchableOpacity
                     style={{
-                      backgroundColor:COLORS.orange,
+                      backgroundColor:COLORS.blue,
                       borderRadius: 30,
                       padding: 15,
                       width: 300,

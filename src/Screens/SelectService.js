@@ -31,12 +31,12 @@ const SelectService = () => {
       <Text style={{color:COLORS.white,marginTop:4}}>₹549</Text>
       </View>
       </View>
-      <View style={{position:'absolute',top:650,alignSelf: 'center'}}>
+      <View style={{position:'absolute',top:600,alignSelf: 'center'}}>
         <TouchableOpacity style={{ backgroundColor:COLORS.blue,
                     borderRadius: 30,
                     padding: 15,
                     width: 300,
-                    }} onPress={()=>navigation.navigate('DateTime')}>
+                    }} onPress={()=>navigation.navigate('TermsAndConditions')}>
           <Text style={{color:COLORS.white,fontWeight:'bold',textAlign:'center'}}>Select Slot</Text>
         </TouchableOpacity>
       </View>

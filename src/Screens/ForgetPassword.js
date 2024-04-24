@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import {Formik} from 'formik';
 import {COLORS} from '../Constants/Color';
 import {useNavigation} from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const ForgetPassword = withGlobalize(
   memo(props => {
@@ -20,28 +20,55 @@ const ForgetPassword = withGlobalize(
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
         <Loader loading={loading}></Loader>
-        <View style={{backgroundColor:COLORS.blue,padding:10,borderBottomRightRadius:10,borderBottomLeftRadius:10}}>
-        <View style={{flexDirection:'row',justifyContent:'space-between',margin:10}}>
-              <TouchableOpacity onPress={()=>{
-                navigation.goBack()
+        <View
+          style={{
+            backgroundColor: COLORS.white,
+            padding: 10,
+            borderBottomRightRadius: 10,
+            borderBottomLeftRadius: 10,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              margin: 10,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
               }}>
-              <Ionicons name="arrow-back-outline" size={15} 
-              style={{margin: 10,color:COLORS.white,backgroundColor:COLORS.black,borderRadius:100,padding:10}} />
-               </TouchableOpacity> 
-               <Image
-               source= {require('../assets/logo.png')}
-               style={{width:120,height:50}}
-               />
+              <AntDesign
+                name="left"
+                size={15}
+                style={{
+                  right:8 ,
+                  color: COLORS.medBlack,
+                  backgroundColor: COLORS.medgrey,
+                  borderRadius: 100,
+                  padding: 10,
+                }}
+              />
+            </TouchableOpacity>
           </View>
-          <Text style={{fontSize:20,fontWeight:'bold',color:COLORS.white,margin:5}}>Forget Password</Text>
-          <Text style={{color:COLORS.white,margin:5}}>Forget your  password for login</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: COLORS.medBlack,
+              margin: 5,
+            }}>
+           Forgot Password
+          </Text>
+          <Text style={{color: COLORS.lgrey, marginLeft: 5}}>
+            enter 5 digit code that mentioned in the email
+          </Text>
         </View>
            <View
                 style={{
                   alignSelf: 'center',
-                  marginTop:100
+                  marginTop:10
                 }}>
-        <Text style={{color:COLORS.black,padding:10}}>Email</Text>
+        <Text style={{color:COLORS.black,padding:10}}>Your Email</Text>
                     <TextInput
                       value={email}
                       placeholder="Enter email"
@@ -54,7 +81,7 @@ const ForgetPassword = withGlobalize(
               
              <TouchableOpacity
                     style={{
-                      backgroundColor:COLORS.orange,
+                      backgroundColor:COLORS.blue,
                       borderRadius: 30,
                       padding: 15,
                       width: 300,
@@ -62,10 +89,10 @@ const ForgetPassword = withGlobalize(
                       marginTop: 20,
                     }}
                     onPress={() => {
-                     navigation.navigate('Login')
+                     navigation.navigate('OtpForMail')
                    }}>
                     <Text style={{alignSelf: 'center', color: COLORS.white}}>
-                      Forget Passowrd
+                      Reset Passowrd
                     </Text>
                   </TouchableOpacity>
     </View>
