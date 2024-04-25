@@ -6,7 +6,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, {useState, memo} from 'react';
+import React, {useState, memo, useEffect} from 'react';
 import api from '../api';
 import IntlProvider from '../Constants/IntlProvider';
 import {withGlobalize} from 'react-native-globalize';
@@ -22,8 +22,8 @@ import {COLORS} from '../Constants/Color';
 import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Avatar} from 'react-native-paper';
-import { logout } from '../Redux/reducer/User';
-import { useDispatch } from 'react-redux';
+import {logout} from '../Redux/reducer/User';
+import {useDispatch} from 'react-redux';
 
 export const LoginFormInitialValues = props => ({
   email: '',
@@ -40,13 +40,20 @@ export const LoginFormValidator = () => {
 const Profile = withGlobalize(
   memo(props => {
     const [loading, setLoading] = useState(false);
+    const [UserInfo, setUserInfo] = useState('');
     const intl = IntlProvider(props);
     const navigation = useNavigation();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      async function getProfileInfo() {
+        const resp = await getUserProfileInfo();
+        setUserInfo(resp);
+      }
+      getProfileInfo();
+    }, []);
 
     const handleSubmit = async values => {
-      const resp = await getUserProfileInfo();
-      console.log('res', resp);
       setLoading(true);
       const myHeaders = new Headers();
       myHeaders.append('Accept', 'application/json');
@@ -85,12 +92,12 @@ const Profile = withGlobalize(
         });
     };
 
-    const Logout = async ()=>{
+    const Logout = async () => {
       await saveUserProfileInfo({});
-      await setJwtToken(null)
+      await setJwtToken(null);
       dispatch(logout());
-      navigation.navigate('Login')
-    }
+      navigation.navigate('Login');
+    };
 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -190,7 +197,7 @@ const Profile = withGlobalize(
                     User Name
                   </Text>
                   <TextInput
-                    value={values.username}
+                    value={UserInfo.name}
                     placeholder="Enter User Name"
                     onChangeText={text => {
                       setFieldValue('username', text);
@@ -209,7 +216,7 @@ const Profile = withGlobalize(
                     value={values.email}
                     placeholder="Enter email"
                     onChangeText={text => {
-                      setFieldValue('email', text);
+                       setFieldValue('email', text);
                     }}
                     style={{
                       borderRadius: 10,
@@ -224,7 +231,7 @@ const Profile = withGlobalize(
                     Phone Number
                   </Text>
                   <TextInput
-                    value={values.phonenumber}
+                    value={UserInfo.mobile}
                     placeholder="Enter phonenumber"
                     onChangeText={text => {
                       setFieldValue('phonenumber', text);
@@ -303,7 +310,7 @@ const Profile = withGlobalize(
                     }}
                     onPress={() => {
                       // handleSubmit();
-                      Logout()
+                      Logout();
                     }}>
                     <Text style={{alignSelf: 'center', color: COLORS.white}}>
                       LogOut{' '}

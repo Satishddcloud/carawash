@@ -158,6 +158,7 @@ const Login = withGlobalize(
                   <TextInput
                     value={values.password}
                     placeholder="Enter password"
+                    secureTextEntry={true}
                     onChangeText={text => {
                       setFieldValue('password', text);
                     }}
