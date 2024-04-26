@@ -282,7 +282,7 @@ const Home = () => {
   return (
     <View style={{flex: 1}}>
       <Loader loading={loading}></Loader>
-      <View style={{padding: 10, backgroundColor: COLORS.blue}}>
+      <View style={{padding: 10, backgroundColor: COLORS.blue,flexDirection: 'row',justifyContent:'space-between'}}>
         <View style={{flexDirection: 'row', marginTop: 10}}>
           <Entypo
             name="location-pin"
@@ -314,7 +314,8 @@ const Home = () => {
               </Text>
             )}
           </View>
-          <View style={{alignSelf: 'center', flex: 1, marginRight: 10}}>
+          </View>
+          <View style={{  marginRight: 10}}>
             {/* <Badge
               value={''}
               badgeStyle={{backgroundColor:COLORS.orange}}
@@ -331,18 +332,18 @@ const Home = () => {
                 color={COLORS.white}
                 style={{alignSelf:'flex-end',}}
               /> */}
-            <TouchableOpacity onPress={()=>{navigation.navigate('SelectVechile')}}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('SelectBrand')}}>
               <Image
                 source={require('../assets/car.png')}
-                style={{padding:5,marginLeft:19}}
+                style={{padding:5,alignSelf:'center',margin:5}}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={{backgroundColor:COLORS.white,borderRadius:4}}>
-              <Text style={{color:COLORS.blue,textAlign:'center'}}>Wagon R</Text>
+            <TouchableOpacity style={{backgroundColor:COLORS.white,borderRadius:2,padding:2}}>
+              <Text style={{color:COLORS.blue,alignSelf:'center'}}>Wagon R</Text>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      {/* </View> */}
       <View style={{flex: 1}}>
         <ScrollView>
           <Text
