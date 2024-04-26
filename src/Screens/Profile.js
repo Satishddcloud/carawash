@@ -213,7 +213,7 @@ const Profile = withGlobalize(
 
                   <Text style={{color: COLORS.black, padding: 10}}>Email</Text>
                   <TextInput
-                    value={values.email}
+                    value={UserInfo.email}
                     placeholder="Enter email"
                     onChangeText={text => {
                        setFieldValue('email', text);
@@ -245,7 +245,7 @@ const Profile = withGlobalize(
                     }}
                   />
 
-                  <Text style={{color: COLORS.black, padding: 10}}>
+                  {/* <Text style={{color: COLORS.black, padding: 10}}>
                     Refferal
                   </Text>
                   <TextInput
@@ -261,7 +261,7 @@ const Profile = withGlobalize(
                       margin: 5,
                       width: 300,
                     }}
-                  />
+                  /> */}
 
                   <Text style={{color: COLORS.black, padding: 10}}>
                     Address
