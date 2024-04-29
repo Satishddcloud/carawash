@@ -17,7 +17,8 @@ const SelectBrand = () => {
      return(
          <View style={{margin:10,padding:10,borderRadius:10,borderWidth:1,borderColor:COLORS.blue}}>
            <TouchableOpacity onPress={()=>{
-              navigation.navigate('SelectVechile')
+            getCars(item.id)
+              
            }} style={{flexDirection:'row',justifyContent:'space-between',}}>
              <Image source={{uri:item.image}}
              style={{width:70,height:50,borderRadius:5,alignSelf:'center'}}/>
@@ -56,6 +57,32 @@ const SelectBrand = () => {
              setLoading(false)
          });
     }
+
+    const getCars = async (id)=>{
+      setLoading(true)
+      const requestOptions = {
+          method: "GET",
+          redirect: "follow"
+        };
+        
+        fetch(`${API_BASE_URL}/api/cars?brand=${id}`, requestOptions)
+          .then((response) => response.text())
+          .then((result) => {
+              const res = JSON.parse(result)
+               console.log(res.data)
+              if(res.data && res.data.length > 0){
+                navigation.navigate('SelectVechile',{cars:res.data})
+                }else{
+                  alert('No cars')
+                }
+              setLoading(false)
+          })
+          .catch((error) => {
+              console.error(error)
+              setLoading(false)
+          });
+     }
+
  
     useEffect(()=>{
      getBrands()
@@ -79,7 +106,7 @@ const SelectBrand = () => {
            marginLeft: 20,
            fontWeight: 'bold',alignSelf:'center'
          }}>
-         Select Vechile
+         Select Brand
        </Text>
      </View>
       <View>

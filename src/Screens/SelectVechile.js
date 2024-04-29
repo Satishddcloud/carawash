@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation,useRoute } from '@react-navigation/native';
 import React,{useState,useEffect} from 'react';
 import { View, Text,TouchableOpacity,Image,FlatList } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -8,6 +8,8 @@ import Loader from '../Components/Loader';
 import { API_BASE_URL } from '../api/ApiClient';
 
 const SelectVechile = () => {
+  const route = useRoute()
+  const {cars}= route.params;
    const navigation = useNavigation()
    const [search,setSearch]=useState('')
    const [loading,setLoading]=useState(false)
@@ -15,12 +17,12 @@ const SelectVechile = () => {
 
    const Item = ({item})=>{
     return(
-        <View style={{margin:10,padding:10,}}>
+        <View style={{margin:5,padding:5,}}>
           <TouchableOpacity onPress={()=>{
 
           }} style={{}}>
             <Image source={{uri: item.image != null ? item.image : 'https://testmodel.co.in/carwash/uploads/cars/1713796299.jpg'}}
-            style={{width:70,height:50,borderRadius:5,alignSelf:'center'}}/>
+            style={{width:100,height:60,borderRadius:5,alignSelf:'center'}}/>
             <Text style={{alignSelf:'center',fontWeight:'bold',color:COLORS.blue}}>{item.name}</Text>
             
          </TouchableOpacity>
@@ -95,7 +97,7 @@ const SelectVechile = () => {
       <View style={{flex:1}}>
         <FlatList
         numColumns={3}
-        data={brands || []}
+        data={cars || []}
         renderItem={Item}
         keyExtractor={item =>item.id}
         />

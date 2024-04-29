@@ -337,9 +337,9 @@ const Home = () => {
                 source={require('../assets/car.png')}
                 style={{padding:5,alignSelf:'center',margin:5}}
               />
-            </TouchableOpacity>
-            <TouchableOpacity style={{backgroundColor:COLORS.white,borderRadius:2,padding:2}}>
+            <View style={{backgroundColor:COLORS.white,borderRadius:2,padding:2}}>
               <Text style={{color:COLORS.blue,alignSelf:'center'}}>Wagon R</Text>
+            </View>
             </TouchableOpacity>
           </View>
         </View>
