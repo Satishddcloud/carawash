@@ -25,7 +25,7 @@ const AppDropDown = (props) => {
             paddingVertical: 10,
         }, { ...containerStyle },]}>
             {label && <Text style={{
-                fontSize:20,
+                fontSize:15,
                 padding:5,
                 color: 'black',
                 fontWeight:'bold',

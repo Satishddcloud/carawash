@@ -19,7 +19,7 @@ const SelectVechile = () => {
     return(
         <View style={{margin:5,padding:5,}}>
           <TouchableOpacity onPress={()=>{
-
+           getServicesBycar(item.id)
           }} style={{}}>
             <Image source={{uri: item.image != null ? item.image : 'https://testmodel.co.in/carwash/uploads/cars/1713796299.jpg'}}
             style={{width:100,height:60,borderRadius:5,alignSelf:'center'}}/>
@@ -30,20 +30,25 @@ const SelectVechile = () => {
     )
    }
 
-   const getBrands = async ()=>{
+   const getServicesBycar = async (id)=>{
     setLoading(true)
     const requestOptions = {
         method: "GET",
         redirect: "follow"
       };
       
-      fetch(`${API_BASE_URL}/api/cars`, requestOptions)
+      fetch(`${API_BASE_URL}/api/services-by-car?car=${id}`, requestOptions)
         .then((response) => response.text())
         .then((result) => {
             const res = JSON.parse(result)
              console.log(res.data)
             if(res.data && res.data.length > 0){
-                setBarnds(res.data)
+              const plans = res.data.map((i)=>({
+                ...i,
+                label:i.car,
+                value:i.id
+              }))
+                navigation.navigate('CreateCar',{carPlans:plans})
               }
             setLoading(false)
         })
@@ -54,7 +59,7 @@ const SelectVechile = () => {
    }
 
    useEffect(()=>{
-    getBrands()
+    
    },[])
 
   return (

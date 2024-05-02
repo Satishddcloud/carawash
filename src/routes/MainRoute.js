@@ -12,6 +12,7 @@ import TermsAndConditions from '../Screens/TermsAndConditions';
 import Payments from '../Screens/Payments';
 import SelectVechile from '../Screens/SelectVechile';
 import SelectBrand from '../Screens/SelectBrand';
+import CreateCar from '../Screens/CreateCar';
 
 
 const Stack = createStackNavigator();
@@ -29,6 +30,7 @@ const MainRoute = () => {
      <Stack.Screen name="Payments" component={Payments} />
      <Stack.Screen name="SelectBrand" component={SelectBrand} />
      <Stack.Screen name="SelectVechile" component={SelectVechile} />
+     <Stack.Screen name="CreateCar" component={CreateCar} />
     </Stack.Navigator>
   );
 };
