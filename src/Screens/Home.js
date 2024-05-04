@@ -125,34 +125,54 @@ const Home = () => {
       },
       error => {
         console.error(error);
-        setError(error.code);
+        setError('Error getting location');
       },
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
     );
   }
 
   const getAddress = async (latitude, longitude) => {
-    const apiKey = 'GOOGLE_MAPS_APIKEY';
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+    // const apiKey = 'GOOGLE_MAPS_APIKEY';
+    // const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`
     try {
       fetch(url)
         .then(response => response.json())
         .then(result => {
           if (result) {
-            // Print the full address
-            if (result && result.results[0] != undefined) {
-              let address = result.results[0].formatted_address;
-              setLocation(address);
-              console.log(address);
+          //   // Print the full address
+          //   if (result && result.results[0] != undefined) {
+          //     let address = result.results[0].formatted_address;
+          //     setLocation(address);
+          //     console.log(address);
+          //   }
+
+          // } else {
+          //   console.error('No results found');
+          // }
+          //  console.log(result.address)
+          if (result && result.address) {
+            let addressData = 'Fetching location..';
+            if (error) {
+              addressData = error;
+            } else if (result.address) {
+              const {  state, suburb, postcode, country } = result.address;
+              addressData = `${country},  ${state}, ${suburb},${postcode}`;
             }
+           console.log('address...',addressData)
+            setLocation(addressData);
           } else {
-            console.error('No results found');
+            setLocation({ error: 'Address not found' });
           }
+        }
         });
     } catch (error) {
-      console.error(error);
+      console.error('Error fetching address:', error);
+      setLocation({ error: 'Error fetching address' });
     }
   };
+
+ 
 
   const getServices = async () => {
     setLoading(true);
@@ -299,7 +319,7 @@ const Home = () => {
           <View style={{marginLeft: 10}}>
             <Text style={{color: COLORS.white}}>Office</Text>
             {/* <Text style={{color:COLORS.white}}>3/5-10,Mehdipatnam, Hyderabad</Text> */}
-            {error == 2 ? (
+            {error == 'Error getting location' ? (
               <TouchableOpacity
                 onPress={() => {
                   Linking.sendIntent(
