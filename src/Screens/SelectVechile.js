@@ -19,7 +19,7 @@ const SelectVechile = () => {
     return(
         <View style={{margin:5,padding:5,}}>
           <TouchableOpacity onPress={()=>{
-           getServicesBycar(item.id)
+           getServicesBycar(item.car_id)
           }} style={{}}>
             <Image source={{uri: item.image != null ? item.image : 'https://testmodel.co.in/carwash/uploads/cars/1713796299.jpg'}}
             style={{width:100,height:60,borderRadius:5,alignSelf:'center'}}/>
@@ -45,8 +45,8 @@ const SelectVechile = () => {
             if(res.data && res.data.length > 0){
               const plans = res.data.map((i)=>({
                 ...i,
-                label:i.car,
-                value:i.id
+                label:i.plan,
+                value:i.car_plan_id
               }))
                 navigation.navigate('CreateCar',{carPlans:plans})
               }
@@ -104,7 +104,7 @@ const SelectVechile = () => {
         numColumns={3}
         data={cars || []}
         renderItem={Item}
-        keyExtractor={item =>item.id}
+        keyExtractor={item =>item.car_id}
         />
       </View>
       <View style={{}}>

@@ -63,7 +63,7 @@ const CreateCar = (props) => {
             const state = res.data.map((i)=>({
                 ...i,
                 label : i.name,
-                value : i.id
+                value : i.state_id
             }))
           setStates(state);
         }

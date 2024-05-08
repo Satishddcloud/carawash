@@ -18,7 +18,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {COLORS} from '../Constants/Color';
 import {Badge} from 'react-native-elements';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Geolocation from '@react-native-community/geolocation';
 import Loader from '../Components/Loader';
 import {API_BASE_URL} from '../api/ApiClient';
@@ -26,6 +26,7 @@ import {API_BASE_URL} from '../api/ApiClient';
 const {width, height} = Dimensions.get('window');
 
 const Home = () => {
+  const isFocused = useIsFocused()
   const navigation = useNavigation();
   const [location, setLocation] = useState('...Loading');
   const [error, setError] = useState(null);
@@ -172,7 +173,32 @@ const Home = () => {
     }
   };
 
- 
+  const getServiceLocation = async ()=>{
+    setLoading(true)
+    const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+const raw = JSON.stringify({
+  "area": `${location}`
+});
+
+const requestOptions = {
+  method: "GET",
+  headers: myHeaders,
+  body: raw,
+  redirect: "follow"
+};
+
+fetch(`${API_BASE_URL}/api/get-service-location`, requestOptions)
+  .then((response) => response.text())
+  .then((result) => {
+    console.log('service location res',result)
+  })
+  .catch(error => {
+    console.log('error', error);
+    setLoading(false);
+  });
+  }
 
   const getServices = async () => {
     setLoading(true);
@@ -189,7 +215,7 @@ const Home = () => {
       .then(response => response.text())
       .then(async result => {
         const res = JSON.parse(result);
-        console.log(res);
+        // console.log(res);
         if (res && res.data.length > 0) {
           setServices(res.data);
         }
@@ -202,11 +228,12 @@ const Home = () => {
   };
 
   useEffect(() => {
+    getServiceLocation()
     getServices();
-  }, []);
+  }, [isFocused]);
 
   const Item = ({item}) => {
-    console.log(item.image, item.name);
+    // console.log(item.image, item.name);
     return (
       <View style={{margin: 5, alignSelf: 'center'}}>
         <TouchableOpacity
@@ -216,7 +243,7 @@ const Home = () => {
           <Image
             source={{uri: item.image}}
             style={{
-              width: 80,
+              width: 100,
               height: 70,
               borderRadius: 5,
               alignSelf: 'center',
@@ -329,7 +356,7 @@ const Home = () => {
                 <Text style={{color: COLORS.white}}>Enable Location</Text>
               </TouchableOpacity>
             ) : (
-              <Text style={{color: COLORS.white, width: 250, fontSize: 10}}>
+              <Text style={{color: COLORS.white, width: 200, fontSize: 10}}>
                 {location}
               </Text>
             )}
@@ -404,7 +431,7 @@ const Home = () => {
               numColumns={3}
               data={services || []}
               renderItem={Item}
-              keyExtractor={item => item.id}
+              keyExtractor={item => item.service_id}
             />
           </View>
           <View style={{flex: 1, flexDirection: 'row'}}>

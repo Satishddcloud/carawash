@@ -17,7 +17,7 @@ const SelectBrand = () => {
      return(
          <View style={{margin:10,padding:10,borderRadius:10,borderWidth:1,borderColor:COLORS.blue}}>
            <TouchableOpacity onPress={()=>{
-            getCars(item.id)
+            getCars(item.brand_id)
               
            }} style={{flexDirection:'row',justifyContent:'space-between',}}>
              <Image source={{uri:item.image}}
@@ -129,7 +129,7 @@ const SelectBrand = () => {
          <FlatList
          data={brands || []}
          renderItem={Item}
-         keyExtractor={item =>item.id}
+         keyExtractor={item =>item.brand_id}
          />
        </View>
      </View>
