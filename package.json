@@ -38,6 +38,7 @@
     "react-native-geocoding": "^0.5.0",
     "react-native-gesture-handler": "^2.15.0",
     "react-native-globalize": "^4.5.1",
+    "react-native-google-places-autocomplete": "^2.5.6",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-modal": "^13.0.1",
     "react-native-pager-view": "^6.3.0",
