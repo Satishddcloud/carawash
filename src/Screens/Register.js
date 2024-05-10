@@ -127,7 +127,7 @@ const Register = withGlobalize(
                       onChangeText={text => {
                         setFieldValue('name', text);
                       }}
-                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
+                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300,textAlignVertical: 'center',paddingVertical: 10}}
                     />
                      {errors.name &&
                          <Text style={{ fontSize: 10, color: 'red' }}>* {errors.name}</Text>
@@ -139,7 +139,7 @@ const Register = withGlobalize(
                       onChangeText={text => {
                         setFieldValue('email', text);
                       }}
-                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
+                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300,textAlignVertical: 'center',paddingVertical: 10}}
                     />
                     {errors.email &&
                          <Text style={{ fontSize: 10, color: 'red' }}>* {errors.email}</Text>
@@ -151,7 +151,7 @@ const Register = withGlobalize(
                       onChangeText={text => {
                         setFieldValue('mobile', text);
                       }}
-                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
+                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300,textAlignVertical: 'center',paddingVertical: 10}}
                     />
                     {errors.mobile &&
                          <Text style={{ fontSize: 10, color: 'red' }}>* {errors.mobile}</Text>
@@ -163,7 +163,7 @@ const Register = withGlobalize(
                       onChangeText={text => {
                         setFieldValue('password', text);
                       }}
-                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
+                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300,textAlignVertical: 'center',paddingVertical: 10}}
                     />
                    {errors.password &&
                          <Text style={{ fontSize: 10, color: 'red' }}>* {errors.password}</Text>
@@ -175,7 +175,7 @@ const Register = withGlobalize(
                       onChangeText={text => {
                         setFieldValue('confirmPassword', text);
                       }}
-                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
+                      style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300,textAlignVertical: 'center',paddingVertical: 10}}
                     />
                    {errors.confirmPassword &&
                          <Text style={{ fontSize: 10, color: 'red' }}>* {errors.confirmPassword}</Text>

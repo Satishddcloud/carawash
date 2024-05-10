@@ -502,7 +502,7 @@ const Home = () => {
            
       
           </View>
-          <View style={{flex: 1, flexDirection: 'row'}}>
+          {/* <View style={{flex: 1, flexDirection: 'row'}}>
             <AntDesign
               name="star"
               size={20}
@@ -531,7 +531,7 @@ const Home = () => {
               renderItem={Item1}
               keyExtractor={item => item.id}
             />
-          </View>
+          </View> */}
         </ScrollView>
       </View>
     </View>
