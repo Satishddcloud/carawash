@@ -208,6 +208,7 @@ const Profile = withGlobalize(
                       borderColor: '#C1C1C1',
                       margin: 5,
                       width: 300,
+                      textAlignVertical: 'center',paddingVertical: 10
                     }}
                   />
 
@@ -224,6 +225,7 @@ const Profile = withGlobalize(
                       borderColor: '#C1C1C1',
                       margin: 5,
                       width: 300,
+                      textAlignVertical: 'center',paddingVertical: 10
                     }}
                   />
 
@@ -242,6 +244,7 @@ const Profile = withGlobalize(
                       borderColor: '#C1C1C1',
                       margin: 5,
                       width: 300,
+                      textAlignVertical: 'center',paddingVertical: 10
                     }}
                   />
 
@@ -278,6 +281,7 @@ const Profile = withGlobalize(
                       borderColor: '#C1C1C1',
                       margin: 5,
                       width: 300,
+                      textAlignVertical: 'center',paddingVertical: 10
                     }}
                   />
 
@@ -296,6 +300,7 @@ const Profile = withGlobalize(
                       borderColor: '#C1C1C1',
                       margin: 5,
                       width: 300,
+                      textAlignVertical: 'center',paddingVertical: 10
                     }}
                   />
 

@@ -149,7 +149,8 @@ const Login = withGlobalize(
                     onChangeText={text => {
                       setFieldValue('email', text);
                     }}
-                    style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
+                    style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300,textAlignVertical: 'center',
+                    paddingVertical: 10}}
                   />
                    {errors.email &&
                          <Text style={{ fontSize: 10, color: 'red' }}>* {errors.email}</Text>
@@ -162,7 +163,7 @@ const Login = withGlobalize(
                     onChangeText={text => {
                       setFieldValue('password', text);
                     }}
-                    style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300}}
+                    style={{borderRadius:10,borderWidth:1,borderColor:'#C1C1C1',margin:5,width:300,textAlignVertical: 'center',paddingVertical: 10}}
                   />
                  {errors.password &&
                       <Text style={{ fontSize: 10, color: 'red' }}> * {errors.password}</Text>

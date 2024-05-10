@@ -434,7 +434,7 @@ fetch(`${API_BASE_URL}/api/get-service-location`, requestOptions)
               keyExtractor={item => item.service_id}
             />
           </View>
-          <View style={{flex: 1, flexDirection: 'row'}}>
+          {/* <View style={{flex: 1, flexDirection: 'row'}}>
             <AntDesign
               name="star"
               size={20}
@@ -463,7 +463,7 @@ fetch(`${API_BASE_URL}/api/get-service-location`, requestOptions)
               renderItem={Item1}
               keyExtractor={item => item.id}
             />
-          </View>
+          </View> */}
         </ScrollView>
       </View>
     </View>
