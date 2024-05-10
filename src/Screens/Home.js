@@ -18,20 +18,23 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {COLORS} from '../Constants/Color';
 import {Badge} from 'react-native-elements';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {DrawerActions, useIsFocused, useNavigation} from '@react-navigation/native';
 import Geolocation from '@react-native-community/geolocation';
 import Loader from '../Components/Loader';
 import {API_BASE_URL} from '../api/ApiClient';
+import { getCarData } from '../Constants/AsyncStorageHelper';
 
 const {width, height} = Dimensions.get('window');
 
 const Home = () => {
   const isFocused = useIsFocused()
   const navigation = useNavigation();
+  const [catinfo,setCarInfo] = useState({})
   const [location, setLocation] = useState('...Loading');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [services, setServices] = useState([]);
+  const[servicesByCars,setServicesByCar] = useState([])
 
   const scrollRef = useRef(null);
   const next = () => {
@@ -90,6 +93,21 @@ const Home = () => {
     },
   ];
 
+  const GetCarData = async ()=>{
+    const car = await getCarData()
+    console.log('cardata.',car,car.car_id)
+    setCarInfo(car)
+    if(car.car_id == 0){
+      getServices();
+    }else{
+      getServicesBycar()
+    }
+  }
+
+  useEffect(() => {
+    GetCarData()
+  },[isFocused])
+
   useEffect(() => {
     const requestLocationPermission = async () => {
       if (Platform.OS === 'ios') {
@@ -128,7 +146,7 @@ const Home = () => {
         console.error(error);
         setError('Error getting location');
       },
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+      // {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
     );
   }
 
@@ -173,32 +191,7 @@ const Home = () => {
     }
   };
 
-  const getServiceLocation = async ()=>{
-    setLoading(true)
-    const myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
-
-const raw = JSON.stringify({
-  "area": `${location}`
-});
-
-const requestOptions = {
-  method: "GET",
-  headers: myHeaders,
-  body: raw,
-  redirect: "follow"
-};
-
-fetch(`${API_BASE_URL}/api/get-service-location`, requestOptions)
-  .then((response) => response.text())
-  .then((result) => {
-    console.log('service location res',result)
-  })
-  .catch(error => {
-    console.log('error', error);
-    setLoading(false);
-  });
-  }
+ 
 
   const getServices = async () => {
     setLoading(true);
@@ -228,9 +221,30 @@ fetch(`${API_BASE_URL}/api/get-service-location`, requestOptions)
   };
 
   useEffect(() => {
-    getServiceLocation()
-    getServices();
+   
   }, [isFocused]);
+
+  const getServicesBycar = async (id)=>{
+    const car = await getCarData()
+    setLoading(true)
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow"
+      };
+      
+      fetch(`${API_BASE_URL}/api/services-by-car?car_id=${car.car_id}`, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+            const res = JSON.parse(result)
+             console.log('services by car res',res.data)
+             setServicesByCar(res.data)
+            setLoading(false)
+        })
+        .catch((error) => {
+            console.error(error)
+            setLoading(false)
+        });
+   }
 
   const Item = ({item}) => {
     // console.log(item.image, item.name);
@@ -258,6 +272,38 @@ fetch(`${API_BASE_URL}/api/get-service-location`, requestOptions)
               width: 100,
             }}>
             {item.name}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const Item2 = ({item}) => {
+    console.log('');
+    return (
+      <View style={{margin: 5, alignSelf: 'center'}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Services', {item: item});
+          }}>
+          <Image
+            source={{uri: item.car_image}}
+            style={{
+              width: 90,
+              height: 50,
+              borderRadius: 5,
+              alignSelf: 'center',
+            }}
+          />
+          <Text
+            style={{
+              color: COLORS.black,
+              alignSelf: 'center',
+              fontSize: 10,
+              margin: 5,
+              width: 100,
+            }}>
+            {item.plan && item.plan.name}
           </Text>
         </TouchableOpacity>
       </View>
@@ -330,6 +376,17 @@ fetch(`${API_BASE_URL}/api/get-service-location`, requestOptions)
     <View style={{flex: 1}}>
       <Loader loading={loading}></Loader>
       <View style={{padding: 10, backgroundColor: COLORS.blue,flexDirection: 'row',justifyContent:'space-between'}}>
+       <TouchableOpacity onPress={()=>{
+        navigation.dispatch(DrawerActions.openDrawer())
+       }} style={{alignSelf:'center'}}>
+        <Feather
+        name='menu'
+        size={30}
+        color={COLORS.white}
+        style={{alignSelf:'center'}}
+        />
+       </TouchableOpacity>
+        
         <View style={{flexDirection: 'row', marginTop: 10}}>
           <Entypo
             name="location-pin"
@@ -343,8 +400,8 @@ fetch(`${API_BASE_URL}/api/get-service-location`, requestOptions)
               margin: 5,
             }}
           />
-          <View style={{marginLeft: 10}}>
-            <Text style={{color: COLORS.white}}>Office</Text>
+          <View style={{marginLeft: 10,alignSelf:'center',}}>
+            <Text style={{color: COLORS.white,}}>Office</Text>
             {/* <Text style={{color:COLORS.white}}>3/5-10,Mehdipatnam, Hyderabad</Text> */}
             {error == 'Error getting location' ? (
               <TouchableOpacity
@@ -353,10 +410,10 @@ fetch(`${API_BASE_URL}/api/get-service-location`, requestOptions)
                     'android.settings.LOCATION_SOURCE_SETTINGS',
                   );
                 }}>
-                <Text style={{color: COLORS.white}}>Enable Location</Text>
+                <Text style={{color: COLORS.white,alignSelf:'center',}}>Enable Location</Text>
               </TouchableOpacity>
             ) : (
-              <Text style={{color: COLORS.white, width: 200, fontSize: 10}}>
+              <Text style={{color: COLORS.white, width: 200, fontSize: 10,alignSelf:'center',}}>
                 {location}
               </Text>
             )}
@@ -379,10 +436,10 @@ fetch(`${API_BASE_URL}/api/get-service-location`, requestOptions)
                 color={COLORS.white}
                 style={{alignSelf:'flex-end',}}
               /> */}
-            <TouchableOpacity onPress={()=>{navigation.navigate('SelectBrand')}}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('SelectService')}}>
               <Image
-                source={require('../assets/car.png')}
-                style={{padding:5,alignSelf:'center',margin:5}}
+                source={{uri:catinfo.car_image}}
+                style={{padding:5,alignSelf:'center',margin:5,width:50,height:30}}
               />
             <View style={{backgroundColor:COLORS.white,borderRadius:2,padding:2}}>
               <Text style={{color:COLORS.blue,alignSelf:'center'}}>Wagon R</Text>
@@ -427,12 +484,23 @@ fetch(`${API_BASE_URL}/api/get-service-location`, requestOptions)
             Choose Services
           </Text>
           <View style={{flex: 1, alignSelf: 'center'}}>
+          {catinfo.car_id != 0 ?(
+               <FlatList
+               numColumns={3}
+               data={servicesByCars || []}
+               renderItem={Item2}
+               keyExtractor={item => item.service_id}
+             />
+          ):(
             <FlatList
-              numColumns={3}
-              data={services || []}
-              renderItem={Item}
-              keyExtractor={item => item.service_id}
-            />
+            numColumns={3}
+            data={services || []}
+            renderItem={Item}
+            keyExtractor={item => item.service_id}
+          />
+          )}
+           
+      
           </View>
           <View style={{flex: 1, flexDirection: 'row'}}>
             <AntDesign

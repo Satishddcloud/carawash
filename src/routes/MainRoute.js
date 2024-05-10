@@ -12,8 +12,12 @@ import TermsAndConditions from '../Screens/TermsAndConditions';
 import Payments from '../Screens/Payments';
 import SelectVechile from '../Screens/SelectVechile';
 import SelectBrand from '../Screens/SelectBrand';
-import CreateCar from '../Screens/CreateCar';
-
+import Login from '../Screens/Login';
+import Register from '../Screens/Register';
+import ForgetPassword from '../Screens/ForgetPassword';
+import ResetPassword from '../Screens/ResetPassword';
+import OtpForMail from '../Screens/OtptoMail';
+import Reset from '../Screens/Reset';
 
 const Stack = createStackNavigator();
 
@@ -22,15 +26,21 @@ const MainRoute = () => {
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {/* <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} />  */}
       <Stack.Screen name={'BottomTabs'} component={BottomTabs} />
+      <Stack.Screen name={'DrawerNavigation'} component={DrawerNavigation} />
+      <Stack.Screen name="Login" component={Login} />
+     <Stack.Screen name="Register" component={Register} />
+     <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+     <Stack.Screen name="ResetPassword" component={ResetPassword} />
+     <Stack.Screen name="OtpForMail" component={OtpForMail} />
+     <Stack.Screen name="Reset" component={Reset} />
       <Stack.Screen name={'Services'} component={Services} />
       <Stack.Screen name="AddtoCart" component={AddtoCart} />
-     <Stack.Screen name="SelectService" component={SelectService} />
-     <Stack.Screen name="DateTime" component={DateTime} />
-     <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
-     <Stack.Screen name="Payments" component={Payments} />
-     <Stack.Screen name="SelectBrand" component={SelectBrand} />
-     <Stack.Screen name="SelectVechile" component={SelectVechile} />
-     <Stack.Screen name="CreateCar" component={CreateCar} />
+      <Stack.Screen name="SelectService" component={SelectService} />
+      <Stack.Screen name="DateTime" component={DateTime} />
+      <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
+      <Stack.Screen name="Payments" component={Payments} />
+      <Stack.Screen name="SelectBrand" component={SelectBrand} />
+      <Stack.Screen name="SelectVechile" component={SelectVechile} />
     </Stack.Navigator>
   );
 };

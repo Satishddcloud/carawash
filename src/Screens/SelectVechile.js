@@ -6,6 +6,9 @@ import { COLORS } from '../Constants/Color';
 import { Card, Searchbar } from 'react-native-paper';
 import Loader from '../Components/Loader';
 import { API_BASE_URL } from '../api/ApiClient';
+import DeviceInfo from 'react-native-device-info';
+import { DateHelper } from '../Constants/DateHelper';
+
 
 const SelectVechile = () => {
   const route = useRoute()
@@ -13,13 +16,13 @@ const SelectVechile = () => {
    const navigation = useNavigation()
    const [search,setSearch]=useState('')
    const [loading,setLoading]=useState(false)
-  const [brands,setBarnds] = useState([])
+ 
 
    const Item = ({item})=>{
     return(
         <View style={{margin:5,padding:5,}}>
           <TouchableOpacity onPress={()=>{
-           getServicesBycar(item.car_id)
+           saveCustomerCar(item.car_id)
           }} style={{}}>
             <Image source={{uri: item.image != null ? item.image : 'https://testmodel.co.in/carwash/uploads/cars/1713796299.jpg'}}
             style={{width:100,height:60,borderRadius:5,alignSelf:'center'}}/>
@@ -30,25 +33,37 @@ const SelectVechile = () => {
     )
    }
 
-   const getServicesBycar = async (id)=>{
+   const saveCustomerCar = async (id)=>{
+    const deviceId = await DeviceInfo.getUniqueId();
     setLoading(true)
-    const requestOptions = {
-        method: "GET",
-        redirect: "follow"
-      };
-      
-      fetch(`${API_BASE_URL}/api/services-by-car?car=${id}`, requestOptions)
+    const myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+
+const raw = JSON.stringify({
+  "device_id": `${deviceId}`,
+  "car_id": id,
+  "created_at": DateHelper.formatToDateYMD(new Date())
+});
+
+const requestOptions = {
+  method: "POST",
+  headers: myHeaders,
+  body: raw,
+  redirect: "follow"
+};
+console.log(raw)
+      fetch(`${API_BASE_URL}/api/save-customer-selected-car`, requestOptions)
         .then((response) => response.text())
         .then((result) => {
             const res = JSON.parse(result)
-             console.log(res.data)
-            if(res.data && res.data.length > 0){
-              const plans = res.data.map((i)=>({
-                ...i,
-                label:i.plan,
-                value:i.car_plan_id
-              }))
-                navigation.navigate('CreateCar',{carPlans:plans})
+             console.log(res.message)
+            if(res && res.status == true){
+                navigation.navigate('SelectService')
+                setLoading(false)
+              }else{
+                alert(res.message)
+                setLoading(false)
               }
             setLoading(false)
         })

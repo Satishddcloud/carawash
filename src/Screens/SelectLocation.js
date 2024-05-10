@@ -11,30 +11,25 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import {  getUserProfileInfo } from '../Constants/AsyncStorageHelper';
 
 
-export const CarInitialValues = props => ({
+export const LocationInitialValues = props => ({
   location: '',
   area:'',
   state: '',
   city: '',
-  planId: '',
-  carNumber: '',
   address: '',
 });
-export const CarFormValidator = props => {
+export const LocationFormValidator = props => {
   return yup.object().shape({
     location: yup.string().required('Please Select your location'),
     area: yup.string().required('Please Select your area'),
     state: yup.string().required('Please enter your State'),
     city: yup.string().required('Please enter your city'),
-    planId: yup.string().required('Please enter your Plan id'),
-    carNumber: yup.string().required('Please enter your  Car Number '),
     address: yup.string().required('Please enter your  Address'),
   });
 };
 
-const CreateCar = (props) => {
-    const route = useRoute()
-    const {carPlans}= route.params;
+const SelectLocation = (props) => {
+  
     const navigation = useNavigation()
     const [loading,setLoading]=useState('')
     const [states,setStates] =useState([])
@@ -63,7 +58,7 @@ const CreateCar = (props) => {
             const state = res.data.map((i)=>({
                 ...i,
                 label : i.name,
-                value : i.state_id
+                value : i.name
             }))
           setStates(state);
         }
@@ -94,7 +89,7 @@ const CreateCar = (props) => {
             const state = res.data.map((i)=>({
                 ...i,
                 label : i.name,
-                value : i.id
+                value : i.name
             }))
           setCities(state);
         }
@@ -125,7 +120,7 @@ const CreateCar = (props) => {
             const state = res.data.map((i)=>({
                 ...i,
                 label : i.name,
-                value : i.id
+                value : i.name
             }))
           setAreas(state);
         }
@@ -156,7 +151,7 @@ const CreateCar = (props) => {
             const state = res.data.map((i)=>({
                 ...i,
                 label : i.name,
-                value : i.id
+                value : i.name
             }))
           setLocations(state);
         }
@@ -168,45 +163,40 @@ const CreateCar = (props) => {
       });
   }
 
-  const createCar = async (values)=>{
-      setLoading(true)
-      const userinfo = await getUserProfileInfo()
-      console.log(userinfo)
-      const myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-
-const formdata = new FormData();
-formdata.append("user_id", `${userinfo.id}`);
-formdata.append("state_id", `${values.state}`);
-formdata.append("city_id",  `${values.city}`);
-formdata.append("area_id",  `${values.area}`);
-formdata.append("location_id",  `${values.location}`);
-formdata.append("car_number",  `${values.carNumber}`);
-formdata.append("address",  `${values.address}`);
-formdata.append("car_plan_id", `${values.planId}`);
+  const getServiceLocation = async (location)=>{
+    setLoading(true)
+    const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
 const requestOptions = {
-  method: "POST",
+  method: "GET",
   headers: myHeaders,
-  body: formdata,
   redirect: "follow"
 };
-fetch(`${API_BASE_URL}/api/save-customer-car`, requestOptions)
-.then(response => response.text())
-.then(async result => {
-  const res = JSON.parse(result);
-  console.log(res);
-  if(res && res.status == true){
-    alert(res.message)
+
+fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOptions)
+  .then((response) => response.text())
+  .then((result) => {
+    const res = JSON.parse(result)
+    console.log('service location res',res,res.getarea)
+
+    if(res && res.getarea == true){
+      Alert.alert("Location", `Service Availbale`,
+      [
+        { text: "Cancel", onPress: () => { } },
+        { text: "Ok", onPress: () => navigation.navigate('MainRoute') }
+      ])
+      setLoading(false);
+    }
+   
     setLoading(false)
-  }
-  setLoading(false)
-})
-.catch(error => {
-    console.error(error);
+  })
+  .catch(error => {
+    console.log('error', error);
     setLoading(false);
   });
   }
+
 
   useEffect(()=>{
     getStates()
@@ -219,32 +209,33 @@ fetch(`${API_BASE_URL}/api/save-customer-car`, requestOptions)
     <View style={{flex:1}}>
         <Loader loading={loading}></Loader>
      <View style={{flexDirection: 'row', marginTop: '5%', marginLeft: '5%'}}>
-       <TouchableOpacity onPress={() => navigation.goBack()}>
+       {/* <TouchableOpacity onPress={() => navigation.goBack()}>
          <AntDesign
            name="arrowleft"
            size={20}
            style={{fontWeight: 'bold'}}
            color={COLORS.blue}
          />
-       </TouchableOpacity>
+       </TouchableOpacity> */}
        <Text
          style={{
            color: COLORS.blue,
            marginLeft: 20,
            fontWeight: 'bold',alignSelf:'center'
          }}>
-         Customer Car 
+         Select Your Location
        </Text>
      </View>
      
       <ScrollView style={{}}>
         <Formik
-          initialValues={CarInitialValues(props)}
-          validationSchema={CarFormValidator()}
+          initialValues={LocationInitialValues(props)}
+          validationSchema={LocationFormValidator()}
           onSubmit={ (values, {resetForm}) => {
-           
-            createCar(values,resetForm() );
-            console.log(values);
+           const location = values.state + ' , ' + values.city + ' , ' + values.area + ' , ' + values.location + ' , ' + values.address
+           navigation.navigate('MainRoute')
+            // getServiceLocation(location );
+            console.log(location);
           }}>
           {({
             values,
@@ -372,33 +363,7 @@ fetch(`${API_BASE_URL}/api/save-customer-car`, requestOptions)
                   * {errors.location}
                 </Text>
               )}
-              <Text style={{
-                fontSize:15,
-                color: 'black',
-                fontWeight:'bold',marginLeft:40,marginTop:5
-            }}>{'Car Number'}</Text>
-              <TextInput
-                placeholder="Enter Car Number "
-                value={values.carNumber}
-                onChangeText={text => {
-                  setFieldValue('carNumber', text);
-                }}
-                style={{
-                  width: '80%',
-                  borderWidth: 1,
-                  borderColor: COLORS.black,
-                  alignSelf: 'center',
-                  height: 40,
-                  borderRadius: 5,
-                  margin: 10,
-                }}
-              />
-              {errors.carNumber && (
-                <Text style={{fontSize: 10, color: 'red', marginLeft: 40}}>
-                  {' '}
-                  * {errors.carNumber}
-                </Text>
-              )}
+            
               <Text style={{
                 fontSize:15,
                 color: 'black',
@@ -426,34 +391,7 @@ fetch(`${API_BASE_URL}/api/save-customer-car`, requestOptions)
                   * {errors.address}
                 </Text>
               )}
-             <AppDropDown
-                label={`Select Car Plan`}
-                items={carPlans || []}
-                value={values.planId}
-                placeholder={'Select car plan'}
-                changeText={text => {
-                  if (text != null) {
-                    setFieldValue('planId', text);
-                  }
-                }}
-                autoCapitalize={'none'}
-                containerStyle={{
-                  padding: 10,
-                  width: '85%',
-                  alignSelf: 'center',
-                }}
-                viewStyle={{
-                  borderRadius: 5,
-                  borderWidth: 1,
-                  borderColor: COLORS.black,
-                }}
-              />
-              {errors.planId && (
-                <Text style={{fontSize: 10, color: 'red', marginLeft: 40}}>
-                  {' '}
-                  * {errors.planId}
-                </Text>
-              )}
+           
               <View style={{alignSelf: 'center', marginBottom: 20}}>
                 <TouchableOpacity
                   style={{
@@ -461,12 +399,13 @@ fetch(`${API_BASE_URL}/api/save-customer-car`, requestOptions)
                     borderRadius: 5,
                     padding: 10,
                     marginTop: 30,
+                    width:100
                   }}
                   onPress={() => {
                     handleSubmit();
                   }}>
                   <Text style={{alignSelf: 'center', color: '#fff'}}>
-                    Create car
+                   Submit
                   </Text>
                 </TouchableOpacity>
                
@@ -479,4 +418,4 @@ fetch(`${API_BASE_URL}/api/save-customer-car`, requestOptions)
   );
 }
 
-export default CreateCar;
+export default SelectLocation;

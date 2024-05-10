@@ -25,15 +25,21 @@ import {Avatar} from 'react-native-paper';
 import {logout} from '../Redux/reducer/User';
 import {useDispatch} from 'react-redux';
 
-export const LoginFormInitialValues = props => ({
+export const ProfileFormInitialValues = props => ({
+  name:'',
   email: '',
-  password: '',
+  mobile:'',
+  address:'',
+  vehicle: '',
 });
 
-export const LoginFormValidator = () => {
+export const ProfileFormValidator = () => {
   return yup.object().shape({
-    email: yup.string().required('UserName Required'),
-    password: yup.string().required('Password is required'),
+    email: yup.string().required('email is Required'),
+    vehicle: yup.string().required('Vehicle is required'),
+    name: yup.string().required('name is Required'),
+    mobile: yup.string().required('mobile number is required'),
+    address: yup.string().required('address number is required'),
   });
 };
 
@@ -166,13 +172,11 @@ const Profile = withGlobalize(
         </View>
         <ScrollView>
           <Formik
-            initialValues={LoginFormInitialValues(props)}
-            // validationSchema={LoginFormValidator}
+            initialValues={ProfileFormInitialValues(props)}
+            validationSchema={ProfileFormValidator}
             onSubmit={(values, {resetForm}) => {
               console.log(values);
-              handleSubmit(values);
-              // navigation.navigate('MainRoute');
-              navigation.navigate('Login');
+           
               // Register(values, resetForm());
             }}>
             {({
@@ -197,7 +201,7 @@ const Profile = withGlobalize(
                     User Name
                   </Text>
                   <TextInput
-                    value={UserInfo.name}
+                    value={values.name}
                     placeholder="Enter User Name"
                     onChangeText={text => {
                       setFieldValue('username', text);
@@ -213,7 +217,7 @@ const Profile = withGlobalize(
 
                   <Text style={{color: COLORS.black, padding: 10}}>Email</Text>
                   <TextInput
-                    value={UserInfo.email}
+                    value={values.email}
                     placeholder="Enter email"
                     onChangeText={text => {
                        setFieldValue('email', text);
@@ -231,7 +235,7 @@ const Profile = withGlobalize(
                     Phone Number
                   </Text>
                   <TextInput
-                    value={UserInfo.mobile}
+                    value={values.mobile}
                     placeholder="Enter phonenumber"
                     onChangeText={text => {
                       setFieldValue('phonenumber', text);
@@ -309,8 +313,7 @@ const Profile = withGlobalize(
                       marginTop: 20,
                     }}
                     onPress={() => {
-                      // handleSubmit();
-                      Logout();
+                      handleSubmit();
                     }}>
                     <Text style={{alignSelf: 'center', color: COLORS.white}}>
                       LogOut{' '}
