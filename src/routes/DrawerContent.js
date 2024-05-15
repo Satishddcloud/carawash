@@ -30,9 +30,10 @@ const DrawerContent = withGlobalize(
     };
     return (
       <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+        <View style={{flex:1}}>
         <DrawerContentScrollView {...props}>
           <DrawerItem
-            labelStyle={{ color: COLORS.blue, fontSize: (20) }}
+            labelStyle={{ color: COLORS.white, fontSize: (20),backgroundColor:COLORS.blue,padding:10,borderRadius:5, }}
             // icon={() => (
             //   <Entypo
             //     name="home"
@@ -47,7 +48,7 @@ const DrawerContent = withGlobalize(
             }}
           />
            <DrawerItem
-            labelStyle={{ color: COLORS.blue, fontSize: (20) }}
+            labelStyle={{ color: COLORS.white, fontSize: (20),backgroundColor:COLORS.blue,padding:10,borderRadius:5, }}
             // icon={() => (
             //   <Entypo
             //     name="home"
@@ -62,13 +63,25 @@ const DrawerContent = withGlobalize(
             }}
           />
 
-          <View style={{}}>
-            <TouchableOpacity style={{padding:10,backgroundColor:COLORS.blue}}>
+         
+          
+        </DrawerContentScrollView>
+        </View>
+        <View style={{bottom:20}}>
+            <TouchableOpacity style={{padding:10,backgroundColor:COLORS.blue,margin:20,borderRadius:10}}
+            onPress={()=>{
+              Alert.alert('Logout', `Are you Logout ?`, [
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {text: 'OK', onPress: () =>{  logoutUser()  }}
+              ])
+            }}>
               <Text style={{alignSelf:'center',color:COLORS.white,fontWeight:'bold'}}>Logout</Text>
             </TouchableOpacity>
           </View>
-          
-        </DrawerContentScrollView>
       </View>
     );
   }),

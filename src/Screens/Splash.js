@@ -11,6 +11,7 @@ import Loader from '../Components/Loader';
 import { withGlobalize } from 'react-native-globalize';
 import { getUserProfileInfo, saveCarData } from '../Constants/AsyncStorageHelper';
 import { API_BASE_URL } from '../api/ApiClient';
+import DeviceInfo from 'react-native-device-info';
 
 const { width, height } = Dimensions.get('window');
 
@@ -75,8 +76,9 @@ const Splash = withGlobalize(memo(props => {
         console.log(position);
       },
       error => {
-        console.error(error);
+        console.error('..',error);
         setError('Error getting location');
+        alert('Please enbale your location')
       },
     //   {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
     );
@@ -117,6 +119,7 @@ const Splash = withGlobalize(memo(props => {
   };
 
   const getServiceLocation = async (location)=>{
+    const deviceId = await DeviceInfo.getUniqueId();
     setLoading(true)
     const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
@@ -135,7 +138,7 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
    
     const cardata = {
           "selected_car_id": 0,
-            "device_id": "sa3223",
+          "device_id": `${deviceId}`,
             "car_id": 0,
             "car_image": "https://testmodel.co.in/carwash/uploads/cars/1714130732.jpg"   
       }

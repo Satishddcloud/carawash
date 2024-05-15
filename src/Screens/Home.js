@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   Linking,
   Platform,
-  PermissionsAndroid,
+  PermissionsAndroid,BackHandler,Alert
 } from 'react-native';
 import {SwiperFlatList, Pagination} from 'react-native-swiper-flatlist';
 import Feather from 'react-native-vector-icons/Feather';
@@ -371,6 +371,25 @@ const Home = () => {
       </View>
     );
   };
+
+  const backPressed = () => {
+    Alert.alert(
+      `ExitApp`,
+      `Are you Sure`,
+      [
+        { text: `No`, onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+        { text: `Yes`, onPress: () => BackHandler.exitApp() },
+      ],
+      { cancelable: false })
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backPressed);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', backPressed);
+    }
+  }, [isFocused]);
 
   return (
     <View style={{flex: 1}}>

@@ -107,12 +107,18 @@ const Login = withGlobalize(
       <View style={{flex: 1, backgroundColor: 'white'}}>
       <Loader loading={loading}></Loader>
       <View style={{backgroundColor:COLORS.blue,padding:10,borderBottomRightRadius:10,borderBottomLeftRadius:10}}>
-        <View style={{alignSelf:'flex-end',margin:10}}>
-             <Image
-             source= {require('../assets/logo.png')}
-             style={{width:120,height:50}}
-             />
-        </View>
+      <View style={{flexDirection:'row',justifyContent:'space-between',margin:10}}>
+              <TouchableOpacity onPress={()=>{
+                navigation.goBack()
+              }}>
+              <Ionicons name="arrow-back-outline" size={15} 
+              style={{margin: 10,color:COLORS.white,backgroundColor:COLORS.black,borderRadius:100,padding:10}} />
+               </TouchableOpacity> 
+               <Image
+               source= {require('../assets/logo.png')}
+               style={{width:120,height:50}}
+               />
+          </View>
         <Text style={{fontSize:20,fontWeight:'bold',color:COLORS.white,margin:5}}>Sign in</Text>
         <Text style={{color:COLORS.white,margin:5}}>Add your email and password to login</Text>
       </View>
