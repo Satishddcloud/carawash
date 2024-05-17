@@ -16,7 +16,7 @@ export const LocationInitialValues = props => ({
   area:'',
   state: '',
   city: '',
-  address: '',
+  // address: '',
 });
 export const LocationFormValidator = props => {
   return yup.object().shape({
@@ -24,7 +24,7 @@ export const LocationFormValidator = props => {
     area: yup.string().required('Please Select your area'),
     state: yup.string().required('Please enter your State'),
     city: yup.string().required('Please enter your city'),
-    address: yup.string().required('Please enter your  Address'),
+    // address: yup.string().required('Please enter your  Address'),
   });
 };
 
@@ -58,7 +58,7 @@ const SelectLocation = (props) => {
             const state = res.data.map((i)=>({
                 ...i,
                 label : i.name,
-                value : i.name
+                value : i.state_id
             }))
           setStates(state);
         }
@@ -69,7 +69,7 @@ const SelectLocation = (props) => {
         setLoading(false);
       });
   }
-  const getCities = async ()=>{
+  const getCities = async (id)=>{
     setLoading(true);
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -80,7 +80,7 @@ const SelectLocation = (props) => {
       redirect: 'follow',
     };
 
-    fetch(`${API_BASE_URL}/api/cities`, requestOptions)
+    fetch(`${API_BASE_URL}/api/cities?state_id=${id}`, requestOptions)
       .then(response => response.text())
       .then(async result => {
         const res = JSON.parse(result);
@@ -89,10 +89,13 @@ const SelectLocation = (props) => {
             const state = res.data.map((i)=>({
                 ...i,
                 label : i.name,
-                value : i.name
+                value : i.city_id
             }))
           setCities(state);
+        }else{
+          setCities([])
         }
+
         setLoading(false);
       })
       .catch(error => {
@@ -200,7 +203,7 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
 
   useEffect(()=>{
     getStates()
-    getCities()
+    // getCities()
     getAreas()
     getLocations()
   },[])
@@ -230,9 +233,9 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
       <ScrollView style={{}}>
         <Formik
           initialValues={LocationInitialValues(props)}
-          validationSchema={LocationFormValidator()}
+          // validationSchema={LocationFormValidator()}
           onSubmit={ (values, {resetForm}) => {
-           const location = values.state + ' , ' + values.city + ' , ' + values.area + ' , ' + values.location + ' , ' + values.address
+           const location = values.state + ' , ' + values.city + ' , ' + values.area + ' , ' + values.location 
            navigation.navigate('MainRoute')
             // getServiceLocation(location );
             console.log(location);
@@ -257,6 +260,7 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
                 changeText={text => {
                   if (text != null) {
                     setFieldValue('state', text);
+                    getCities(text)
                   }
                 }}
                 autoCapitalize={'none'}
@@ -363,7 +367,7 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
                   * {errors.location}
                 </Text>
               )}
-            
+{/*             
               <Text style={{
                 fontSize:15,
                 color: 'black',
@@ -391,7 +395,7 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
                   * {errors.address}
                 </Text>
               )}
-           
+            */}
               <View style={{alignSelf: 'center', marginBottom: 20}}>
                 <TouchableOpacity
                   style={{

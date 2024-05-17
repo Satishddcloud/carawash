@@ -252,7 +252,7 @@ const Home = () => {
       <View style={{margin: 5, alignSelf: 'center'}}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Services', {item: item});
+            navigation.navigate('DateTime',{services:services});
           }}>
           <Image
             source={{uri: item.image}}
@@ -284,7 +284,7 @@ const Home = () => {
       <View style={{margin: 5, alignSelf: 'center'}}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Services', {item: item});
+            navigation.navigate('DateTime',{services:servicesByCars});
           }}>
           <Image
             source={{uri: item.car_image}}
@@ -372,24 +372,24 @@ const Home = () => {
     );
   };
 
-  const backPressed = () => {
-    Alert.alert(
-      `ExitApp`,
-      `Are you Sure`,
-      [
-        { text: `No`, onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-        { text: `Yes`, onPress: () => BackHandler.exitApp() },
-      ],
-      { cancelable: false })
-    return true;
-  }
+  // const backPressed = () => {
+  //   Alert.alert(
+  //     `ExitApp`,
+  //     `Are you Sure`,
+  //     [
+  //       { text: `No`, onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+  //       { text: `Yes`, onPress: () => BackHandler.exitApp() },
+  //     ],
+  //     { cancelable: false })
+  //   return true;
+  // }
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backPressed);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', backPressed);
-    }
-  }, [isFocused]);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backPressed);
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', backPressed);
+  //   }
+  // }, [isFocused]);
 
   return (
     <View style={{flex: 1}}>

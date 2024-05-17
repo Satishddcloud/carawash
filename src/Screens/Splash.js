@@ -12,6 +12,7 @@ import { withGlobalize } from 'react-native-globalize';
 import { getUserProfileInfo, saveCarData } from '../Constants/AsyncStorageHelper';
 import { API_BASE_URL } from '../api/ApiClient';
 import DeviceInfo from 'react-native-device-info';
+import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
 
 const { width, height } = Dimensions.get('window');
 
@@ -20,6 +21,7 @@ const Splash = withGlobalize(memo(props => {
     const [location, setLocation] = useState('...Loading');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+
 
     const navigationStep = async () => {
         const userObject = await getUserProfileInfo();
@@ -67,21 +69,62 @@ const Splash = withGlobalize(memo(props => {
     requestLocationPermission();
   }, []);
 
+    //useEffect(() => {
+    const checkLocationServices = async () => {
+      try {
+        const success =
+          await LocationServicesDialogBox.checkLocationServicesIsEnabled({
+            message:
+              '<h2> Location </h2>Please enable location permission from settings.<br/>',
+            ok: 'Open Settings',
+            cancel: 'Cancel',
+            enableHighAccuracy: true,
+            showDialog: true,
+            openLocationServices: true,
+            preventOutSideTouch: false,
+            preventBackClick: false,
+            providerListener: true,
+          });
+        getLocation();
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    // checkLocationServices();
+
+    // const listener = DeviceEventEmitter.addListener(
+    //   'locationProviderStatusChange',
+    //   status => {
+    //     console.log(status);
+    //   },
+    // );
+
+    // return () => {
+    //   LocationServicesDialogBox.stopListener();
+    //   listener.remove();
+    // };
+//  }, [isFocused]);
+
   function getLocation() {
-  
+    setLoading(true)
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
         getAddress(latitude, longitude);
         console.log(position);
+        setError(null)
+        setLoading(false)
       },
       error => {
         console.error('..',error);
         setError('Error getting location');
-        alert('Please enbale your location')
+        checkLocationServices();
+        setLoading(false)
       },
     //   {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
     );
+    setLoading(flase)
   }
 
   const getAddress = async (latitude, longitude) => {
