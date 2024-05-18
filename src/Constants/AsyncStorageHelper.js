@@ -56,9 +56,4 @@ export const getCarData = async () => {
   const userCarInfo = await AsyncStorage.getItem(CAR_DATA);
   return JSON.parse(userCarInfo);
 };
-export const saveLoginStatus = async status => {
-    await AsyncStorage.setItem(LOGIN_STATUS, `${status}`);
-  };
-  export const getLoginStatus = async () => {
-    return await AsyncStorage.getItem(LOGIN_STATUS);
-  };
+

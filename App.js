@@ -16,7 +16,10 @@ import { FormattedProvider, GlobalizeProvider } from 'react-native-globalize';
 // import VersionCheck from 'react-native-version-check';
 import metadata from './src/locales';
 import { COLORS } from './src/Constants/Color';
+import { getUserProfileInfo } from './src/Constants/AsyncStorageHelper';
 // import crashlytics from '@react-native-firebase/crashlytics';
+import { setuser } from './src/Redux/reducer/User';
+import { useDispatch } from 'react-redux';
 
 const AppStatusBar = ({ backgroundColor, ...props }) => {
   if (Platform.OS == "ios") {
@@ -33,6 +36,7 @@ const AppStatusBar = ({ backgroundColor, ...props }) => {
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const dispatch = useDispatch()
 
   const [locale, setLocale] = useState();
 
@@ -40,17 +44,17 @@ const App = () => {
     const locale = await metadata.locale();
     setLocale(locale)
   }
-  // const checkUser = async () => {
-  //   let account = await AuthService.getAccount()
-  //   //  console.log(account);
-  //   if (account) {
-  //     console.log("account", account.USERID);
-  //     // console.log("account");
-  //     dispatch(setuser(account))
-  //   } else {
-  //     // console.log("no no");
-  //   }
-  // }
+  const checkUser = async () => {
+    let account = await getUserProfileInfo()
+    //  console.log(account);
+    if (account) {
+      console.log("account", account);
+      // console.log("account");
+      dispatch(setuser(account))
+    } else {
+      // console.log("no no");
+    }
+  }
 
   // const checkVersion = async () => {
   //   const update = await VersionCheck.needUpdate();
@@ -81,7 +85,7 @@ const App = () => {
   //   checkVersion()
   // }, [])
   useEffect(() => {
-    // checkUser()
+    checkUser()
     // crashlytics().log('App started'); 
     setUpLocale();
   }, [])

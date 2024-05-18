@@ -193,7 +193,7 @@ const Splash = withGlobalize(
         .then(async result => {
           const res = JSON.parse(result);
           console.log('service location res', res, res.getarea);
-          if (carRes.car_id != 0) {
+          if (carRes && carRes.car_id != 0) {
             await saveCarData(carRes);
           } else {
             const cardata = {

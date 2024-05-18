@@ -12,12 +12,14 @@ import { getJwtToken } from '../Constants/AsyncStorageHelper';
 import { API_BASE_URL } from '../api/ApiClient';
 import Loader from '../Components/Loader';
 import { DateHelper } from '../Constants/DateHelper';
+import { useSelector } from 'react-redux';
 
 const DateTime = () => {
   const route = useRoute();
   const {services,details}= route.params
   const navigation = useNavigation();
-
+  const loginStatus = useSelector(state => state.User.login_status)
+    console.log('loginStatus',loginStatus)
   const [loading,setLoading] = useState(false)
   const [date, setDate] = useState(new Date());
   const [time,setTime]=useState(new Date())
@@ -132,7 +134,7 @@ fetch(`${API_BASE_URL}/api/add-to-cart`, requestOptions)
   console.log(timeRange); // Output: "5:00 AM - 8:00 PM"
   
   useEffect(() => {
-    getTokenRes()
+   
 
   }, []);
 
@@ -145,14 +147,15 @@ fetch(`${API_BASE_URL}/api/add-to-cart`, requestOptions)
         </TouchableOpacity>
         <Text style={{ color: COLORS.blue, fontSize: 20, marginLeft: 20, bottom: 5, fontWeight: 'bold',alignSelf:'center' }}>Select Date & Time</Text>
       </View>
+      <ScrollView>
       <View>
-          <Text style={{fontSize:17,fontWeight:'bold',margin:10,alignSelf:'center',color:COLORS.black}}>Service Available Timings : {timeRange}</Text>
+          <Text style={{fontSize:15,fontWeight:'bold',margin:10,alignSelf:'center',color:COLORS.black}}>Service Available Timings : {timeRange}</Text>
          </View>
       <View style={styles.container}>
         {/* <TouchableOpacity onPress={() => setOpen(true)} style={styles.button}>
           <Text style={styles.buttonText}>Select Date</Text>
         </TouchableOpacity> */}
-        <Text style={{alignSelf:'center',fontSize:20}}>Select Date</Text>
+        <Text style={{alignSelf:'center',fontSize:20,color:'black',fontWeight:'bold'}}>Select Date</Text>
         <Text style={styles.dateText}>Date: {date.toLocaleDateString()}</Text>
        
         {/* {showDatePicker && (
@@ -183,7 +186,7 @@ fetch(`${API_BASE_URL}/api/add-to-cart`, requestOptions)
         {/* <TouchableOpacity onPress={() => setShowTimePicker(true)} style={[styles.button, { marginTop: '5%' }]}>
           <Text style={styles.buttonText}>Select Time</Text>
         </TouchableOpacity> */}
-        <Text style={{alignSelf:'center',fontSize:20}}>Select Time</Text>
+        <Text style={{alignSelf:'center',fontSize:20,color:'black',fontWeight:'bold'}}>Select Time</Text>
         <Text style={styles.dateText}>Time: {time.toLocaleTimeString()}</Text>
 
         {/* {showTimePicker && (
@@ -215,7 +218,11 @@ fetch(`${API_BASE_URL}/api/add-to-cart`, requestOptions)
         maximumDate={maxTime}
       />
 
-        <TouchableOpacity style={styles.proceedButton} onPress={()=>{
+      
+      </View>
+      </ScrollView>
+      <View>
+      <TouchableOpacity style={styles.proceedButton} onPress={()=>{
           //  if(filteredData.length > 0){
           //   navigation.navigate('Services',{avaliableServices:filteredData})
           //  }else{
@@ -282,13 +289,13 @@ fetch(`${API_BASE_URL}/api/add-to-cart`, requestOptions)
          </View>
 
          <View style={{flex:1,marginTop:50}}>
-         <TouchableOpacity style={{padding:15,borderRadius:20,alignSelf:'center',backgroundColor:COLORS.blue,width:300}}
+         <TouchableOpacity style={{padding:15,borderRadius:20,alignSelf:'center',backgroundColor:COLORS.blue,width:300,bottom:10}}
          onPress={()=>{
-          // if(tokenRes != null){
+          if(loginStatus){
             Addtocart(details)
-          // }else{
-          //   alert('Please Login')
-          // }
+          }else{
+            alert('Please Login')
+          }
         
          }}>
           <Text style={{alignSelf:'center',color:COLORS.white}}>Add to cart</Text>
@@ -327,15 +334,16 @@ const styles = StyleSheet.create({
   },
   proceedButton: {
     backgroundColor: COLORS.blue,
-    marginTop: 'auto',
-    marginBottom: 20,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    width:200,
+    marginBottom: 10,
+     padding:10,
     borderRadius: 8,
+    alignSelf:'center'
   },
   proceedButtonText: {
     color: COLORS.white,
     fontSize: 18,
     fontWeight: 'bold',
+    alignSelf:'center'
   },
 });

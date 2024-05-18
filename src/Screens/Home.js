@@ -253,6 +253,7 @@ const Home = () => {
         <TouchableOpacity
           onPress={() => {
             // navigation.navigate('DateTime',{services:services});
+            alert('Please select car')
           }}>
           <Image
             source={{uri: item.image}}
@@ -398,7 +399,7 @@ const Home = () => {
       <View style={{padding: 10, backgroundColor: COLORS.blue,flexDirection: 'row',justifyContent:'space-between'}}>
        <TouchableOpacity onPress={()=>{
         navigation.dispatch(DrawerActions.openDrawer())
-       }} style={{alignSelf:'center'}}>
+       }} style={{alignSelf:'center',marginTop:10}}>
         <Feather
         name='menu'
         size={30}

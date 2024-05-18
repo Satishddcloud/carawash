@@ -2,18 +2,19 @@ import {StyleSheet, Text, View, TouchableOpacity, FlatList,Image,Alert} from 're
 import React, {useState, useEffect} from 'react';
 import {COLORS} from '../Constants/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Loader from '../Components/Loader';
 import {API_BASE_URL} from '../api/ApiClient';
-import {getJwtToken, getLoginStatus} from '../Constants/AsyncStorageHelper';
+import {getJwtToken, } from '../Constants/AsyncStorageHelper';
+import { useSelector } from 'react-redux';
 
 const Carts = () => {
   const navigation = useNavigation();
-
+const isFocused = useIsFocused()
   const [loading, setLoading] = useState(false);
   const [cartList, setCartList] = useState([]);
-
-
+  const loginStatus = useSelector(state => state.User.login_status)
+    console.log('loginStatus',loginStatus)
 
   const getCartList = async () => {
     
@@ -31,7 +32,7 @@ const Carts = () => {
       .then(response => response.text())
       .then(result => {
         const res = JSON.parse(result);
-        console.log(res);
+        console.log('cart res',res);
 
         if (res.data && res.data.length > 0) {
           setCartList(res.data);
@@ -79,7 +80,7 @@ const Carts = () => {
   useEffect(() => {
 
     getCartList();
-  }, []);
+  }, [isFocused]);
 
   const Item = ({item}) => {
     return (
@@ -128,7 +129,15 @@ const Carts = () => {
         }}>
         My Cart
       </Text>
-    
+            {!loginStatus && (<Text
+            style={{
+              alignSlef: 'center',
+              fontWeight: 'bold',
+              fontSize: 20,
+              margin: 20,
+            }}>
+                Please Login ..
+          </Text>)}
       <View>
         {cartList.length > 0 ? (
           <FlatList

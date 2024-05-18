@@ -3,7 +3,7 @@ import React, {useState, memo} from 'react';
 import api from '../api';
 import IntlProvider from '../Constants/IntlProvider';
 import {withGlobalize} from 'react-native-globalize';
-import {saveLoginStatus, saveUserProfileInfo, setJwtToken} from '../Constants/AsyncStorageHelper';
+import { saveUserProfileInfo, setJwtToken} from '../Constants/AsyncStorageHelper';
 import Loader from '../Components/Loader';
 import * as yup from 'yup';
 import {Formik} from 'formik';
@@ -54,8 +54,8 @@ const Login = withGlobalize(
           const res = JSON.parse(result)
           console.log(res)
           if(res && res.status == true){
+            // dispatch(setuser(res))
             const token = res.token
-             await saveLoginStatus(true)
                getProfile(token)
               await setJwtToken(token)
               alert(res.message)
@@ -84,10 +84,10 @@ const Login = withGlobalize(
         fetch(`${API_BASE_URL}/api/profile`, requestOptions)
           .then((response) => response.text())
           .then(async(result) =>{
-            //  console.log(result)
+             console.log(result)
             const res= JSON.parse(result)
              if(res && res.status == true){
-              console.log(res.data)
+              // console.log(res.data)
               const userdata = res.data
               await saveUserProfileInfo(userdata)
               dispatch(setuser(userdata))
