@@ -103,7 +103,7 @@ const SelectLocation = (props) => {
         setLoading(false);
       });
   }
-  const getAreas = async ()=>{
+  const getAreas = async (id)=>{
     setLoading(true);
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -114,7 +114,7 @@ const SelectLocation = (props) => {
       redirect: 'follow',
     };
 
-    fetch(`${API_BASE_URL}/api/areas`, requestOptions)
+    fetch(`${API_BASE_URL}/api/areas?city_id=${id}`, requestOptions)
       .then(response => response.text())
       .then(async result => {
         const res = JSON.parse(result);
@@ -123,9 +123,11 @@ const SelectLocation = (props) => {
             const state = res.data.map((i)=>({
                 ...i,
                 label : i.name,
-                value : i.name
+                value : i.area_id
             }))
           setAreas(state);
+        }else{
+          setAreas([]);
         }
         setLoading(false);
       })
@@ -134,7 +136,7 @@ const SelectLocation = (props) => {
         setLoading(false);
       });
   }
-  const getLocations = async ()=>{
+  const getLocations = async (id)=>{
     setLoading(true);
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -145,7 +147,7 @@ const SelectLocation = (props) => {
       redirect: 'follow',
     };
 
-    fetch(`${API_BASE_URL}/api/locations`, requestOptions)
+    fetch(`${API_BASE_URL}/api/locations?area_id=${id}`, requestOptions)
       .then(response => response.text())
       .then(async result => {
         const res = JSON.parse(result);
@@ -154,9 +156,11 @@ const SelectLocation = (props) => {
             const state = res.data.map((i)=>({
                 ...i,
                 label : i.name,
-                value : i.name
+                value : i.id
             }))
           setLocations(state);
+        }else{
+          setLocations([]);
         }
         setLoading(false);
       })
@@ -204,8 +208,8 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
   useEffect(()=>{
     getStates()
     // getCities()
-    getAreas()
-    getLocations()
+    // getAreas()
+    // getLocations()
   },[])
 
   return (
@@ -290,6 +294,7 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
                 changeText={text => {
                   if (text != null) {
                     setFieldValue('city', text);
+                    getAreas(text)
                   }
                 }}
                 autoCapitalize={'none'}
@@ -319,6 +324,7 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
                 changeText={text => {
                   if (text != null) {
                     setFieldValue('area', text);
+                    getLocations(text)
                   }
                 }}
                 autoCapitalize={'none'}

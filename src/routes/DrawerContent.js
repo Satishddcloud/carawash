@@ -5,7 +5,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { withGlobalize } from 'react-native-globalize';
 import { memo } from 'react';
-import { saveCarData, saveUserId, saveUserProfileInfo, setJwtToken } from '../Constants/AsyncStorageHelper';
+import { saveCarData, saveLoginStatus, saveUserId, saveUserProfileInfo, setJwtToken } from '../Constants/AsyncStorageHelper';
 import { logout } from '../Redux/reducer/User';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../Constants/Color';
@@ -30,7 +30,8 @@ const DrawerContent = withGlobalize(
     }
       await saveUserId(undefined);
       await saveUserProfileInfo({});
-      await setJwtToken({})
+      await setJwtToken(null)
+      await saveLoginStatus(null)
       await saveCarData(cardata)
       dispatch(logout());
       navigation.reset({

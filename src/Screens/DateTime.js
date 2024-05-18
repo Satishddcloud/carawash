@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View,ScrollView,Alert } from 'react-native';
-import React, { useState,useRef } from 'react';
+import React, { useState,useRef,useEffect } from 'react';
 import { COLORS } from '../Constants/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -17,6 +17,7 @@ const DateTime = () => {
   const route = useRoute();
   const {services,details}= route.params
   const navigation = useNavigation();
+
   const [loading,setLoading] = useState(false)
   const [date, setDate] = useState(new Date());
   const [time,setTime]=useState(new Date())
@@ -24,6 +25,7 @@ const DateTime = () => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [open, setOpen] = useState(false)
   const refRBSheet = useRef();
+
 
 
   const onChangeDate = (event, selectedDate) => {
@@ -65,10 +67,10 @@ const DateTime = () => {
 // myHeaders.append("Cookie", "XSRF-TOKEN=eyJpdiI6IkxFdElEbE1uOS96M0R3Sld2dUtOUkE9PSIsInZhbHVlIjoiNDJabzRzYkd2cnY2MW5kYndFWXlNaHhTSmQ4c2RNVmJZeUtYV2RZRytyZ1B4QkdheXQyNHJmNGdkSFFyMlhrUkpESWRlMHFXMlNFaXFhd29TNFZIZmsvbitwWEFBZEhVeU9iLzl6c0FJTGdmb2lpK2pmeGRoQWhBOEZuUlhHVmEiLCJtYWMiOiIxZTAzMGViZGY1ODBmYWJhNTg4ZWQ3NDBmM2IwNTEzNGNkMTlmNzYzYmRjZWMwOGViMThkZWM5ZjMxNjIyMWE5IiwidGFnIjoiIn0%3D; laravel_session=eyJpdiI6Ik1teE4vRDFUdDczYmtDTjJMM1MxL2c9PSIsInZhbHVlIjoiaHE5OGR2MzB2ekFWT2lJM09SOUJUZkpHTzd2MHBzdkk0Zjlnb29VOE9WSTVBRTBjbWl3WkMrK1lEbEdtU0liMEFyaEViVnk4UHg1RTlGcTd6Rnd6VHFYc2Z6YjV5a3RiQVRXM2FpK1dOb0p5Yk8wYmZ3OXIzU2V0VkFDRk9kNUoiLCJtYWMiOiI4ODRjZGMxN2NkNmY3YjA1OTVhODkzMTdjNjE4NzUyZTk1M2FlMTZmMzgyMDZkNWQ2ZWJmNTYzZDUyNTBjNzFkIiwidGFnIjoiIn0%3D");
 
 const raw = JSON.stringify({
-  "car_plan_id": details.car_plan_id,
+  "car_plan_id": parseInt(details.car_plan_id),
   "slot_date": currentFloatDate,
-  "slot_time": currentFloatTime,
-  "price": details.price
+  "slot_time": parseInt(currentFloatTime),
+  "price": parseInt(details.price)
 });
 
 const requestOptions = {
@@ -129,6 +131,10 @@ fetch(`${API_BASE_URL}/api/add-to-cart`, requestOptions)
   const timeRange = formatTimeRange(startHour, endHour);
   console.log(timeRange); // Output: "5:00 AM - 8:00 PM"
   
+  useEffect(() => {
+    getTokenRes()
+
+  }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -278,7 +284,12 @@ fetch(`${API_BASE_URL}/api/add-to-cart`, requestOptions)
          <View style={{flex:1,marginTop:50}}>
          <TouchableOpacity style={{padding:15,borderRadius:20,alignSelf:'center',backgroundColor:COLORS.blue,width:300}}
          onPress={()=>{
-          Addtocart(details)
+          // if(tokenRes != null){
+            Addtocart(details)
+          // }else{
+          //   alert('Please Login')
+          // }
+        
          }}>
           <Text style={{alignSelf:'center',color:COLORS.white}}>Add to cart</Text>
          </TouchableOpacity>

@@ -3,7 +3,7 @@ import React, {useState, memo} from 'react';
 import api from '../api';
 import IntlProvider from '../Constants/IntlProvider';
 import {withGlobalize} from 'react-native-globalize';
-import {saveUserProfileInfo, setJwtToken} from '../Constants/AsyncStorageHelper';
+import {saveLoginStatus, saveUserProfileInfo, setJwtToken} from '../Constants/AsyncStorageHelper';
 import Loader from '../Components/Loader';
 import * as yup from 'yup';
 import {Formik} from 'formik';
@@ -55,6 +55,7 @@ const Login = withGlobalize(
           console.log(res)
           if(res && res.status == true){
             const token = res.token
+             await saveLoginStatus(true)
                getProfile(token)
               await setJwtToken(token)
               alert(res.message)
