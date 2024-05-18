@@ -12,6 +12,7 @@ import Vechiles from '../Screens/Vechiles';
 import TopTabs from './TopTabs';
 import SelectService from '../Screens/SelectService';
 import DrawerNavigation from './DrawerNavigation';
+import Carts from '../Screens/Carts';
 
 const Tab = createBottomTabNavigator();
 
@@ -75,7 +76,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="My Vechiles"
-        component={SelectService}
+        component={Carts}
         options={{
           tabBarIcon: ({focused}) => {
             return (

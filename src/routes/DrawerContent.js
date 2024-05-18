@@ -5,12 +5,13 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { withGlobalize } from 'react-native-globalize';
 import { memo } from 'react';
-import { saveUserId, saveUserProfileInfo } from '../Constants/AsyncStorageHelper';
+import { saveCarData, saveUserId, saveUserProfileInfo, setJwtToken } from '../Constants/AsyncStorageHelper';
 import { logout } from '../Redux/reducer/User';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../Constants/Color';
 import { TouchableOpacity } from 'react-native';
 import { color } from 'react-native-reanimated';
+import DeviceInfo from 'react-native-device-info';
 
 
 
@@ -20,12 +21,21 @@ const DrawerContent = withGlobalize(
     const dispatch = useDispatch();
 
     const logoutUser = async () => {
+      const deviceId = await DeviceInfo.getUniqueId();
+      const cardata = {
+        "selected_car_id": 0,
+        "device_id": `${deviceId}`,
+          "car_id": 0,
+          "car_image": "https://testmodel.co.in/carwash/uploads/cars/1714130732.jpg"   
+    }
       await saveUserId(undefined);
       await saveUserProfileInfo({});
+      await setJwtToken({})
+      await saveCarData(cardata)
       dispatch(logout());
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Login' }],
+        routes: [{ name: 'Splash' }],
       });
     };
     return (
@@ -33,7 +43,7 @@ const DrawerContent = withGlobalize(
         <View style={{flex:1}}>
         <DrawerContentScrollView {...props}>
           <DrawerItem
-            labelStyle={{ color: COLORS.white, fontSize: (20),backgroundColor:COLORS.blue,padding:10,borderRadius:5, }}
+            labelStyle={{ color: COLORS.blue, fontSize: (20), }}
             // icon={() => (
             //   <Entypo
             //     name="home"
@@ -48,7 +58,7 @@ const DrawerContent = withGlobalize(
             }}
           />
            <DrawerItem
-            labelStyle={{ color: COLORS.white, fontSize: (20),backgroundColor:COLORS.blue,padding:10,borderRadius:5, }}
+            labelStyle={{ color: COLORS.blue, fontSize: (20), }}
             // icon={() => (
             //   <Entypo
             //     name="home"

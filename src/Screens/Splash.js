@@ -9,7 +9,7 @@ import { isNullOrUndefined } from 'util';
 import Geolocation from '@react-native-community/geolocation';
 import Loader from '../Components/Loader';
 import { withGlobalize } from 'react-native-globalize';
-import { getUserProfileInfo, saveCarData } from '../Constants/AsyncStorageHelper';
+import { getCarData, getUserProfileInfo, saveCarData } from '../Constants/AsyncStorageHelper';
 import { API_BASE_URL } from '../api/ApiClient';
 import DeviceInfo from 'react-native-device-info';
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
@@ -162,6 +162,7 @@ const Splash = withGlobalize(memo(props => {
   };
 
   const getServiceLocation = async (location)=>{
+    const carRes = await getCarData()
     const deviceId = await DeviceInfo.getUniqueId();
     setLoading(true)
     const myHeaders = new Headers();
@@ -178,7 +179,10 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
   .then(async(result) => {
     const res = JSON.parse(result)
     console.log('service location res',res,res.getarea)
-   
+  if (carRes.car_id != 0){
+    await saveCarData(carRes)
+   }
+   else{
     const cardata = {
           "selected_car_id": 0,
           "device_id": `${deviceId}`,
@@ -186,6 +190,7 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
             "car_image": "https://testmodel.co.in/carwash/uploads/cars/1714130732.jpg"   
       }
        await saveCarData(cardata)
+    }
     if(res && res.getarea == true){
         Alert.alert("Location", `Service Availbale`,
         [
@@ -197,7 +202,9 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
      Alert.alert("Location", `${res.getarea}`,
         [
           { text: "Cancel", onPress: () => { } },
-          { text: "Ok", onPress: () => navigation.navigate('SelectLocation') }
+          { text: "Ok", onPress: async() =>{
+             navigation.navigate('SelectLocation')
+            } }
         ])
     setLoading(false);
     }

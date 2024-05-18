@@ -252,7 +252,7 @@ const Home = () => {
       <View style={{margin: 5, alignSelf: 'center'}}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('DateTime',{services:services});
+            // navigation.navigate('DateTime',{services:services});
           }}>
           <Image
             source={{uri: item.image}}
@@ -279,12 +279,13 @@ const Home = () => {
   };
 
   const Item2 = ({item}) => {
-    console.log('');
+    // console.log('item',item);
     return (
       <View style={{margin: 5, alignSelf: 'center'}}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('DateTime',{services:servicesByCars});
+            navigation.navigate('DateTime',{details:item});
+            // navigation.navigate('Services',{services:servicesByCars});
           }}>
           <Image
             source={{uri: item.car_image}}
