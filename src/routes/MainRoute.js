@@ -18,6 +18,7 @@ import ResetPassword from '../Screens/ResetPassword';
 import OtpForMail from '../Screens/OtptoMail';
 import Reset from '../Screens/Reset';
 import Carts from '../Screens/Carts';
+import MyOrders from '../Screens/MyOrders';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,7 @@ const MainRoute = () => {
       <Stack.Screen name="Payments" component={Payments} />
       <Stack.Screen name="SelectBrand" component={SelectBrand} />
       <Stack.Screen name="SelectVechile" component={SelectVechile} />
+      <Stack.Screen name="MyOrders" component={MyOrders} />
     </Stack.Navigator>
   );
 };

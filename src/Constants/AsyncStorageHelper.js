@@ -6,7 +6,7 @@ const LOGIN_DATA = 'loginData';
 const JWT_TOKEN = 'jwtToken';
 const MOBILE_NUMBER = 'mobile_number';
 const CAR_DATA = 'CarData';
-const LOGIN_STATUS = 'login_status'
+const LOCATION_DATA = 'location_data'
 
 export const saveLanguagePref = async language => {
   await AsyncStorage.setItem(LANGUAGE_PREF, language);
@@ -55,5 +55,12 @@ export const saveCarData = async carInfo => {
 export const getCarData = async () => {
   const userCarInfo = await AsyncStorage.getItem(CAR_DATA);
   return JSON.parse(userCarInfo);
+};
+export const saveLocationData = async locationInfo => {
+  await AsyncStorage.setItem(LOCATION_DATA, JSON.stringify(locationInfo));
+};
+export const getLocationData = async () => {
+  const userLocationInfo = await AsyncStorage.getItem(LOCATION_DATA);
+  return JSON.parse(userLocationInfo);
 };
 

@@ -21,6 +21,7 @@ import {
   getCarData,
   getUserProfileInfo,
   saveCarData,
+  saveLocationData,
 } from '../Constants/AsyncStorageHelper';
 import {API_BASE_URL} from '../api/ApiClient';
 import DeviceInfo from 'react-native-device-info';
@@ -34,6 +35,8 @@ const Splash = withGlobalize(
     const [location, setLocation] = useState('...Loading');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [pincode, setPincode] = useState('');
+    console.log('postcode', pincode);
 
     const navigationStep = async () => {
       const userObject = await getUserProfileInfo();
@@ -154,9 +157,18 @@ const Splash = withGlobalize(
                 if (error) {
                   addressData = error;
                 } else if (result.address) {
-                  const {state, city, suburb, postcode, country} =
-                    result.address;
-                  addressData = `${country},  ${state}, ${city},  ${suburb},${postcode}`;
+                  const {
+                    state,
+                    city,
+                    suburb,
+                    postcode,
+                    city_district,
+                    county,
+                    state_district,
+                    country,
+                  } = result.address;
+                  addressData = `${suburb}, ${city_district}, ${city}, ${county}, ${state_district},  ${state},  ${postcode}, ${country}`;
+                  setPincode(postcode);
                 }
                 console.log('address...', addressData);
                 setLocation(addressData);
@@ -205,10 +217,25 @@ const Splash = withGlobalize(
             };
             await saveCarData(cardata);
           }
-          if (res && res.getarea == true) {
+          if (res && res.getarea == 'true') {
             Alert.alert('Location', `Service Availbale`, [
               {text: 'Cancel', onPress: () => {}},
-              {text: 'Ok', onPress: () => navigation.navigate('MainRoute')},
+              {
+                text: 'Ok',
+                onPress: async () => {
+                  const loc = res.locaton_data;
+                  const obj = {
+                    state_id: loc.state_id,
+                    city_id: loc.city_id,
+                    area_id: loc.area_id,
+                    location_id: loc.location_id,
+                    pincode: parseInt(pincode),
+                  };
+                  console.log(obj);
+                  await saveLocationData(obj);
+                  navigation.navigate('MainRoute')
+                },
+              },
             ]);
             setLoading(false);
           } else {

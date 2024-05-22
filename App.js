@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Platform,
   SafeAreaView,
@@ -10,51 +10,50 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import AuthRoute from './src/routes/AuthRoute';
-import { FormattedProvider, GlobalizeProvider } from 'react-native-globalize';
+import {FormattedProvider, GlobalizeProvider} from 'react-native-globalize';
 // import VersionCheck from 'react-native-version-check';
 import metadata from './src/locales';
-import { COLORS } from './src/Constants/Color';
-import { getUserProfileInfo } from './src/Constants/AsyncStorageHelper';
+import {COLORS} from './src/Constants/Color';
+import {getUserProfileInfo} from './src/Constants/AsyncStorageHelper';
 // import crashlytics from '@react-native-firebase/crashlytics';
-import { setuser } from './src/Redux/reducer/User';
-import { useDispatch } from 'react-redux';
+import {setuser} from './src/Redux/reducer/User';
+import {useDispatch} from 'react-redux';
 
-const AppStatusBar = ({ backgroundColor, ...props }) => {
-  if (Platform.OS == "ios") {
+const AppStatusBar = ({backgroundColor, ...props}) => {
+  if (Platform.OS == 'ios') {
     return (
       <View style={[styles.statusBar, backgroundColor]}>
         <StatusBar backgroundColor={backgroundColor} {...props} />
       </View>
     );
   } else {
-    return <StatusBar backgroundColor={backgroundColor}  {...props} />
+    return <StatusBar backgroundColor={backgroundColor} {...props} />;
   }
-
 };
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [locale, setLocale] = useState();
 
   const setUpLocale = async () => {
     const locale = await metadata.locale();
-    setLocale(locale)
-  }
+    setLocale(locale);
+  };
   const checkUser = async () => {
-    let account = await getUserProfileInfo()
+    let account = await getUserProfileInfo();
     //  console.log(account);
     if (account) {
-      console.log("account", account);
+      console.log('account', account);
       // console.log("account");
-      dispatch(setuser(account))
+      dispatch(setuser(account));
     } else {
       // console.log("no no");
     }
-  }
+  };
 
   // const checkVersion = async () => {
   //   const update = await VersionCheck.needUpdate();
@@ -85,10 +84,10 @@ const App = () => {
   //   checkVersion()
   // }, [])
   useEffect(() => {
-    checkUser()
-    // crashlytics().log('App started'); 
+    checkUser();
+    // crashlytics().log('App started');
     setUpLocale();
-  }, [])
+  }, []);
 
   // useEffect(() => {
   //   const unsubscribe = NetInfo.addEventListener(state => {
@@ -99,11 +98,10 @@ const App = () => {
   //   return () => unsubscribe();
   // }, []);
 
-
   return (
     <>
       <SafeAreaView style={styles.topSafeArea} />
-      <SafeAreaView style={[{ flex: 1 }, { ...styles.bottomSafeArea }]}>
+      <SafeAreaView style={[{flex: 1}, {...styles.bottomSafeArea}]}>
         <AppStatusBar backgroundColor={COLORS.blue} barStyle="light-content" />
         <FormattedProvider
           locale={locale}
@@ -134,14 +132,14 @@ const styles = StyleSheet.create({
   },
   topSafeArea: {
     flex: 0,
-    backgroundColor: '#000000'
+    backgroundColor: '#000000',
   },
   bottomSafeArea: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   statusBar: {
-    height: BAR_HEIGHT
+    height: BAR_HEIGHT,
   },
   sectionDescription: {
     marginTop: 8,

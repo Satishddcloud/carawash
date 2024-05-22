@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import { COLORS } from '../Constants/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {  getUserProfileInfo } from '../Constants/AsyncStorageHelper';
+import {  getUserProfileInfo, saveLocationData } from '../Constants/AsyncStorageHelper';
 
 
 export const LocationInitialValues = props => ({
@@ -16,7 +16,7 @@ export const LocationInitialValues = props => ({
   area:'',
   state: '',
   city: '',
-  // address: '',
+  pincode: '',
 });
 export const LocationFormValidator = props => {
   return yup.object().shape({
@@ -36,8 +36,8 @@ const SelectLocation = (props) => {
     const [cities,setCities] =useState([])
     const [areas,setAreas] =useState([])
     const [locations,setLocations] =useState([])
-
-
+    const [pincode,setPincode] = useState('')
+     console.log(pincode)
   const getStates = async ()=>{
     setLoading(true);
     const myHeaders = new Headers();
@@ -237,12 +237,20 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
       <ScrollView style={{}}>
         <Formik
           initialValues={LocationInitialValues(props)}
-          // validationSchema={LocationFormValidator()}
-          onSubmit={ (values, {resetForm}) => {
-           const location = values.state + ' , ' + values.city + ' , ' + values.area + ' , ' + values.location 
-           navigation.navigate('MainRoute')
+          validationSchema={LocationFormValidator()}
+          onSubmit={async (values, {resetForm}) => {
+          //  const location = values.state + ' , ' + values.city + ' , ' + values.area + ' , ' + values.location 
+           const obj ={
+            "state_id": values.state,
+            "city_id": values.city,
+            "area_id": values.area,
+            "location_id": values.location,
+            "pincode": values.pincode || pincode
+        }
+        await saveLocationData(obj)
+            navigation.navigate('MainRoute')
             // getServiceLocation(location );
-            console.log(location);
+            console.log(obj);
           }}>
           {({
             values,
@@ -352,6 +360,9 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
                 placeholder={'Select Location'}
                 changeText={text => {
                   if (text != null) {
+                    const item = locations.find(obj => obj.id === text);
+                    setPincode(item && item.pincode)
+    
                     setFieldValue('location', text);
                   }
                 }}
@@ -373,17 +384,17 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
                   * {errors.location}
                 </Text>
               )}
-{/*             
+            
               <Text style={{
                 fontSize:15,
                 color: 'black',
                 fontWeight:'bold',marginLeft:40,marginTop:5
-            }}>{'Address'}</Text>
+            }}>{'Pincode'}</Text>
               <TextInput
-                placeholder="Enter Address "
-                value={values.Tag}
+                placeholder=" "
+                value={values.pincode || `${pincode != undefined ? pincode :''}`}
                 onChangeText={text => {
-                  setFieldValue('address', text);
+                  setFieldValue('pincode',text);
                 }}
                 style={{
                   width: '80%',
@@ -395,13 +406,13 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
                   margin: 10,
                 }}
               />
-              {errors.address && (
+              {/* {errors.address && (
                 <Text style={{fontSize: 10, color: 'red', marginLeft: 40}}>
                   {' '}
                   * {errors.address}
                 </Text>
-              )}
-            */}
+              )} */}
+           
               <View style={{alignSelf: 'center', marginBottom: 20}}>
                 <TouchableOpacity
                   style={{
