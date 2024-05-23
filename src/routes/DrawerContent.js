@@ -72,6 +72,21 @@ const DrawerContent = withGlobalize(
               )
             }}
           />
+            <DrawerItem
+            labelStyle={{ color: COLORS.blue, fontSize: (20), }}
+            // icon={() => (
+            //   <Entypo
+            //     name="home"
+            //     style={{ color: '#98280B', fontSize: (20) }}
+            //   />
+            // )}
+            label=" My Cart"
+            onPress={() => {
+              navigation.navigate('Carts')
+              navigation.dispatch(DrawerActions.closeDrawer()
+              )
+            }}
+          />
           <DrawerItem
             labelStyle={{ color: COLORS.blue, fontSize: (20), }}
             // icon={() => (

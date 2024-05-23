@@ -172,13 +172,13 @@ const Carts = () => {
   return (
     <View style={{flex: 1}}>
       <Loader loading={loading}></Loader>
-      {/* <View style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }}>
+      <View style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <AntDesign name="arrowleft" size={20} style={{ fontWeight: 'bold',alignSelf:'center' }} color={COLORS.blue} />
         </TouchableOpacity>
-        <Text style={{ color: COLORS.blue, fontSize: 20, marginLeft: 20, bottom: 5, fontWeight: 'bold',alignSelf:'center' }}>My Cart</Text>
-      </View> */}
-      <Text
+        <Text style={{ color: COLORS.blue, fontSize: 20, marginLeft: 70, bottom: 5, fontWeight: 'bold',alignSelf:'center' }}>My Cart</Text>
+      </View>
+      {/* <Text
         style={{
           color: COLORS.blue,
           fontSize: 20,
@@ -187,7 +187,7 @@ const Carts = () => {
           margin: 10,
         }}>
         My Cart
-      </Text>
+      </Text> */}
       {!loginStatus && (
         <Text
           style={{

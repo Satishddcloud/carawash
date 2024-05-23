@@ -11,7 +11,10 @@ import api from '../api';
 import IntlProvider from '../Constants/IntlProvider';
 import {withGlobalize} from 'react-native-globalize';
 import {
+  getJwtToken,
   getUserProfileInfo,
+  saveCarData,
+  saveUserId,
   saveUserProfileInfo,
   setJwtToken,
 } from '../Constants/AsyncStorageHelper';
@@ -19,19 +22,23 @@ import Loader from '../Components/Loader';
 import * as yup from 'yup';
 import {Formik} from 'formik';
 import {COLORS} from '../Constants/Color';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Avatar} from 'react-native-paper';
 import {logout} from '../Redux/reducer/User';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import { API_BASE_URL } from '../api/ApiClient';
+import DeviceInfo from 'react-native-device-info';
 
-export const ProfileFormInitialValues = props => ({
-  name:'',
-  email: '',
-  mobile:'',
-  address:'',
-  vehicle: '',
-});
+export const ProfileFormInitialValues = (props,profileRes) => {
+ 
+  return{
+  name: profileRes != undefined ? profileRes.name :'',
+  email: profileRes != undefined ? profileRes.email :'',
+  mobile:profileRes != undefined ? (profileRes.mobile) :'',
+  address:profileRes != undefined ? profileRes.address :'',
+  vehicle: profileRes != undefined ? profileRes.vehicle :'',
+}};
 
 export const ProfileFormValidator = () => {
   return yup.object().shape({
@@ -46,20 +53,25 @@ export const ProfileFormValidator = () => {
 const Profile = withGlobalize(
   memo(props => {
     const [loading, setLoading] = useState(false);
-    const [UserInfo, setUserInfo] = useState('');
+    const isFocused = useIsFocused()
+    const [profileRes1, setProfileRes] = useState();
     const intl = IntlProvider(props);
     const navigation = useNavigation();
     const dispatch = useDispatch();
-
+    const profileRes = useSelector(state => state.User.userData);
+    console.log('profileRes',profileRes)
+    const [name,setName]=useState(profileRes != undefined   ? (profileRes.name) :'')
+    const [email,setEmail]=useState(profileRes != undefined   ? (profileRes.email) :'')
+    const [mobile,setMobile]=useState(profileRes != undefined   ? (profileRes.mobile) :'')
+    const [address,setAddress]=useState('')
+    const [vehicle,setVehicle]=useState('')
+   
     useEffect(() => {
-      async function getProfileInfo() {
-        const resp = await getUserProfileInfo();
-        setUserInfo(resp);
-      }
-      getProfileInfo();
-    }, []);
+     
+      getProfile();
+    }, [isFocused]);
 
-    const handleSubmit = async values => {
+    const updateProfile = async values => {
       setLoading(true);
       const myHeaders = new Headers();
       myHeaders.append('Accept', 'application/json');
@@ -99,10 +111,54 @@ const Profile = withGlobalize(
     };
 
     const Logout = async () => {
+      const deviceId = await DeviceInfo.getUniqueId();
+      const cardata = {
+        "selected_car_id": 0,
+        "device_id": `${deviceId}`,
+          "car_id": 0,
+          "car_image": "https://testmodel.co.in/carwash/uploads/cars/1714130732.jpg"   
+    }
+      await saveUserId(undefined);
       await saveUserProfileInfo({});
-      await setJwtToken(null);
+      await setJwtToken(null)
+      await saveCarData(cardata)
       dispatch(logout());
-      navigation.navigate('Login');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Splash' }],
+      });
+    };
+
+    const getProfile = async () => {
+      const token = await getJwtToken();
+      setLoading(true);
+      const myHeaders = new Headers();
+      myHeaders.append('Accept', 'application/json');
+      myHeaders.append('Authorization', `Bearer ${token}`);
+      const requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+
+      fetch(`${API_BASE_URL}/api/profile`, requestOptions)
+        .then(response => response.text())
+        .then(async result => {
+          console.log(result);
+          const res = JSON.parse(result);
+          if (res && res.status == true) {
+            // console.log(res.data)
+            const userdata = res.data;
+            setProfileRes(userdata);
+           
+           
+          }
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error(error);
+          setLoading(false);
+        });
     };
 
     return (
@@ -171,8 +227,8 @@ const Profile = withGlobalize(
           </View>
         </View>
         <ScrollView>
-          <Formik
-            initialValues={ProfileFormInitialValues(props)}
+          {/* <Formik
+            initialValues={ProfileFormInitialValues(props,profileRes)}
             validationSchema={ProfileFormValidator}
             onSubmit={(values, {resetForm}) => {
               console.log(values);
@@ -188,7 +244,7 @@ const Profile = withGlobalize(
               setFieldTouched,
               isValid,
               handleSubmit,
-            }) => (
+            }) => ( */}
               <>
                 <View
                   style={{
@@ -201,10 +257,10 @@ const Profile = withGlobalize(
                     User Name
                   </Text>
                   <TextInput
-                    value={values.name}
+                    value={name}
                     placeholder="Enter User Name"
                     onChangeText={text => {
-                      setFieldValue('username', text);
+                      setName( text);
                     }}
                     style={{
                       borderRadius: 10,
@@ -218,10 +274,10 @@ const Profile = withGlobalize(
 
                   <Text style={{color: COLORS.black, padding: 10}}>Email</Text>
                   <TextInput
-                    value={values.email}
+                    value={`${email}`}
                     placeholder="Enter email"
                     onChangeText={text => {
-                       setFieldValue('email', text);
+                       setEmail(text);
                     }}
                     style={{
                       borderRadius: 10,
@@ -237,10 +293,10 @@ const Profile = withGlobalize(
                     Phone Number
                   </Text>
                   <TextInput
-                    value={values.mobile}
+                    value={`${mobile}`}
                     placeholder="Enter phonenumber"
                     onChangeText={text => {
-                      setFieldValue('phonenumber', text);
+                      setMobile( text);
                     }}
                     style={{
                       borderRadius: 10,
@@ -270,14 +326,14 @@ const Profile = withGlobalize(
                     }}
                   /> */}
 
-                  <Text style={{color: COLORS.black, padding: 10}}>
+                  {/* <Text style={{color: COLORS.black, padding: 10}}>
                     Address
                   </Text>
                   <TextInput
-                    value={values.address}
+                    value={address}
                     placeholder="Enter Address"
                     onChangeText={text => {
-                      setFieldValue('address', text);
+                      setAddress( text);
                     }}
                     style={{
                       borderRadius: 10,
@@ -287,16 +343,16 @@ const Profile = withGlobalize(
                       width: 300,
                       textAlignVertical: 'center',paddingVertical: 10
                     }}
-                  />
+                  /> 
 
                   <Text style={{color: COLORS.black, padding: 10}}>
                     Add Vehicle{' '}
                   </Text>
                   <TextInput
-                    value={values.vehicle}
+                    value={vehicle}
                     placeholder="Enter vehicle"
                     onChangeText={text => {
-                      setFieldValue('vehicle', text);
+                      setVehicle( text);
                     }}
                     style={{
                       borderRadius: 10,
@@ -306,7 +362,7 @@ const Profile = withGlobalize(
                       width: 300,
                       textAlignVertical: 'center',paddingVertical: 10
                     }}
-                  />
+                  />*/}
 
                   <TouchableOpacity
                     style={{
@@ -318,7 +374,7 @@ const Profile = withGlobalize(
                       marginTop: 20,
                     }}
                     onPress={() => {
-                      handleSubmit();
+                      Logout();
                     }}>
                     <Text style={{alignSelf: 'center', color: COLORS.white}}>
                       LogOut{' '}
@@ -326,8 +382,8 @@ const Profile = withGlobalize(
                   </TouchableOpacity>
                 </View>
               </>
-            )}
-          </Formik>
+            {/* )}
+          </Formik> */}
         </ScrollView>
       </View>
     );

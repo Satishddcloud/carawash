@@ -76,7 +76,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="My Vechiles"
-        component={Carts}
+        component={SelectService}
         options={{
           tabBarIcon: ({focused}) => {
             return (
