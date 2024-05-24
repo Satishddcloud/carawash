@@ -9,6 +9,7 @@ import {Formik} from 'formik';
 import {COLORS} from '../Constants/Color';
 import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { API_BASE_URL } from '../api/ApiClient';
 
 const ForgetPassword = withGlobalize(
   memo(props => {
@@ -16,6 +17,43 @@ const ForgetPassword = withGlobalize(
     const intl = IntlProvider(props);
     const navigation = useNavigation();
     const [email,setEmail]=useState('')
+
+
+    const ForgetPassword = async ()=>{
+           setLoading(true)
+           const myHeaders = new Headers();
+          myHeaders.append("Accept", "application/json");
+          myHeaders.append("Content-Type", "application/json");
+
+          const raw = JSON.stringify({
+            "email":`${email}`
+          });
+          
+          const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+          };
+          fetch(`${API_BASE_URL}/api/send-otp`, requestOptions)
+            .then((response) => response.text())
+             .then((result) => {
+              const res= JSON.parse(result)
+              console.log(res,res.status)
+              if(res && res.status == true){
+                alert(res.message)
+                 navigation.navigate('OtpForMail',{email:email})
+              }else{
+                alert(res.message)
+              }
+              
+              setLoading(false)
+            })
+             .catch((error) =>{ 
+              console.error(error)
+              setLoading(false)
+            });
+    }
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -89,7 +127,8 @@ const ForgetPassword = withGlobalize(
                       marginTop: 20,
                     }}
                     onPress={() => {
-                     navigation.navigate('OtpForMail')
+                      ForgetPassword()
+                  
                    }}>
                     <Text style={{alignSelf: 'center', color: COLORS.white}}>
                       Reset Passowrd

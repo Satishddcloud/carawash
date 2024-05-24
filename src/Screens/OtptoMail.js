@@ -12,16 +12,56 @@ import IntlProvider from '../Constants/IntlProvider';
 import {withGlobalize} from 'react-native-globalize';
 import Loader from '../Components/Loader';
 import {COLORS} from '../Constants/Color';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
+import { API_BASE_URL } from '../api/ApiClient';
 
 const OtpForMail = withGlobalize(
   memo(props => {
+    const route = useRoute()
+    const {email}= route.params
     const [loading, setLoading] = useState(false);
     const intl = IntlProvider(props);
     const navigation = useNavigation();
     const [otp, setOtp] = useState('');
+
+    const ValidateOtp = async ()=>{
+      setLoading(true)
+      const myHeaders = new Headers();
+     myHeaders.append("Accept", "application/json");
+     myHeaders.append("Content-Type", "application/json");
+
+     const raw = JSON.stringify({
+        "otp":`${otp}`,
+       "email":`${email}`
+     });
+     
+     const requestOptions = {
+       method: "POST",
+       headers: myHeaders,
+       body: raw,
+       redirect: "follow"
+     };
+     fetch(`${API_BASE_URL}/api/validate-otp`, requestOptions)
+       .then((response) => response.text())
+        .then((result) => {
+         const res= JSON.parse(result)
+         console.log(res,res.status)
+         if(res && res.status == true){
+           alert(res.message)
+           navigation.navigate('Reset');
+         }else{
+           alert(res.message)
+         }
+         
+         setLoading(false)
+       })
+        .catch((error) =>{ 
+         console.error(error)
+         setLoading(false)
+       });
+}
 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -65,14 +105,9 @@ const OtpForMail = withGlobalize(
             }}>
             Check Your Mail
           </Text>
-          <Text style={{color: COLORS.lgrey, margin: 5}}>
-            We sent a reset link to
-          </Text>
-          <Text style={{color: COLORS.medBlack, left: '45%', bottom: 25}}>
-            contact@dscode...com
-          </Text>
-          <Text style={{color: COLORS.lgrey, marginLeft: 5}}>
-            enter 5 digit code that mentioned in the email
+          
+          <Text style={{color: COLORS.black, marginLeft: 5}}>
+            enter 6 digit code that mentioned in the email
           </Text>
         </View>
         <View>
@@ -108,7 +143,7 @@ const OtpForMail = withGlobalize(
             marginTop: 20,
           }}
           onPress={() => {
-            navigation.navigate('Reset');
+            ValidateOtp()
           }}>
           <Text style={{alignSelf: 'center', color: COLORS.white}}>
             Verify Code{' '}
@@ -120,10 +155,14 @@ const OtpForMail = withGlobalize(
             justifyContent: 'center',
             marginTop: 4,
           }}>
-          <Text style={{color: COLORS.lgrey, margin: 10}}>
+          <Text style={{color: COLORS.black, margin: 10}}>
             Haven’t got the email yet?
           </Text>
+          <TouchableOpacity  onPress={() => {
+            navigation.goBack()
+          }}>
           <Text style={{color: COLORS.blue, marginTop: 10,fontWeight:'bold'}}>Resend email</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -138,6 +177,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 10,
     alignSelf: 'center',
+    color: 'black',
   },
 });
 export default OtpForMail;
