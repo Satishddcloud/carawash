@@ -388,7 +388,7 @@ fetch(`${API_BASE_URL}/api/get-service-location?area=${location}`, requestOption
               <Text style={{
                 fontSize:15,
                 color: 'black',
-                fontWeight:'bold',marginLeft:40,marginTop:5
+                fontWeight:'bold',marginLeft:50,marginTop:5
             }}>{'Pincode'}</Text>
               <TextInput
                 placeholder=" "

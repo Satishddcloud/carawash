@@ -50,7 +50,7 @@ const OtpForMail = withGlobalize(
          console.log(res,res.status)
          if(res && res.status == true){
            alert(res.message)
-           navigation.navigate('Reset');
+           navigation.navigate('Reset',{email:email});
          }else{
            alert(res.message)
          }

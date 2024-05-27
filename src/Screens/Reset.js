@@ -12,15 +12,19 @@ import IntlProvider from '../Constants/IntlProvider';
 import {withGlobalize} from 'react-native-globalize';
 import Loader from '../Components/Loader';
 import {COLORS} from '../Constants/Color';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
+
 
 const Reset = withGlobalize(
   memo(props => {
+    const route = useRoute()
+    const {email} = route.params;
     const [loading, setLoading] = useState(false);
     const intl = IntlProvider(props);
     const navigation = useNavigation();
+
+
 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -81,7 +85,7 @@ const Reset = withGlobalize(
             marginTop: 20,
           }}
           onPress={() => {
-            navigation.navigate('ResetPassword');
+            navigation.navigate('ResetPassword',{email:email});
           }}>
           <Text style={{alignSelf: 'center',textAlign:'center',color: COLORS.white}}>
             confirm{' '}

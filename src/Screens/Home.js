@@ -175,8 +175,8 @@ const Home = () => {
             if (error) {
               addressData = error;
             } else if (result.address) {
-              const {  state, suburb, postcode, country } = result.address;
-              addressData = `${country},  ${state}, ${suburb},${postcode}`;
+              const { neighbourhood, state, suburb, postcode, country } = result.address;
+              addressData = `${country},  ${state}, ${suburb || neighbourhood},${postcode}`;
             }
            console.log('address...',addressData)
             setLocation(addressData);

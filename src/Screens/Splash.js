@@ -158,6 +158,7 @@ const Splash = withGlobalize(
                   addressData = error;
                 } else if (result.address) {
                   const {
+                    amenity,neighbourhood,road,
                     state,
                     city,
                     suburb,
@@ -167,7 +168,7 @@ const Splash = withGlobalize(
                     state_district,
                     country,
                   } = result.address;
-                  addressData = `${suburb}, ${city_district}, ${city}, ${county}, ${state_district},  ${state},  ${postcode}, ${country}`;
+                  addressData = `${suburb || amenity}, ${city_district || neighbourhood }, ${city || road}, ${county}, ${state_district},  ${state},  ${postcode}, ${country}`;
                   setPincode(postcode);
                 }
                 console.log('address...', addressData);
