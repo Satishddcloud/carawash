@@ -13,6 +13,7 @@ import TopTabs from './TopTabs';
 import SelectService from '../Screens/SelectService';
 import DrawerNavigation from './DrawerNavigation';
 import Carts from '../Screens/Carts';
+import MyOrders from '../Screens/MyOrders';
 
 const Tab = createBottomTabNavigator();
 
@@ -55,7 +56,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="Bookings"
-        component={TopTabs}
+        component={MyOrders}
         options={{
           tabBarIcon: ({focused}) => {
             return (

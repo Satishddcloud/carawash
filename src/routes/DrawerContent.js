@@ -87,7 +87,7 @@ const DrawerContent = withGlobalize(
               )
             }}
           />
-          <DrawerItem
+          {/* <DrawerItem
             labelStyle={{ color: COLORS.blue, fontSize: (20), }}
             // icon={() => (
             //   <Entypo
@@ -101,7 +101,7 @@ const DrawerContent = withGlobalize(
               navigation.dispatch(DrawerActions.closeDrawer()
               )
             }}
-          />
+          /> */}
 
          
           

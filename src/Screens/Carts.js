@@ -28,6 +28,7 @@ const Carts = () => {
     const token = await getJwtToken();
     setLoading(true);
     const myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
     myHeaders.append('Authorization', `Bearer ${token}`);
 
     const requestOptions = {
@@ -45,6 +46,7 @@ const Carts = () => {
           setCartList(res.data);
           setLoading(false);
         } else {
+          alert('Please Login')
           setCartList([]);
         }
         setLoading(false);
@@ -59,6 +61,7 @@ const Carts = () => {
     const token = await getJwtToken();
     setLoading(true);
     const myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
     myHeaders.append('Authorization', `Bearer ${token}`);
 
     const requestOptions = {

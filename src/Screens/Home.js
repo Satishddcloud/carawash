@@ -208,7 +208,7 @@ const Home = () => {
       .then(response => response.text())
       .then(async result => {
         const res = JSON.parse(result);
-        // console.log(res);
+        console.log('ser',res);
         if (res && res.data.length > 0) {
           setServices(res.data);
         }
@@ -506,19 +506,27 @@ const Home = () => {
           </Text>
           <View style={{flex: 1, alignSelf: 'center'}}>
           {catinfo.car_id != 0 ?(
-               <FlatList
+            <>
+             { servicesByCars.length > 0 ?( 
+             <FlatList
                numColumns={3}
                data={servicesByCars || []}
                renderItem={Item2}
                keyExtractor={item => item.service_id}
-             />
+             />):(
+             <Text style={{fontWeight:'bold',fontSize:20,color:'black',alignSelf:'center',margin:20}}>No services are Available</Text>
+             )}
+             </>
           ):(
+            <>
+             { services.length > 0 ?( 
             <FlatList
             numColumns={3}
             data={services || []}
             renderItem={Item}
             keyExtractor={item => item.service_id}
-          />
+            />):(<Text style={{fontWeight:'bold',fontSize:20,color:'black',alignSelf:'center',margin:20}}>No services are Available</Text>)}
+            </>
           )}
            
       

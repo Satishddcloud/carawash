@@ -18,6 +18,7 @@ const MyOrders = () => {
         const token = await getJwtToken();
         setLoading(true);
         const myHeaders = new Headers();
+        myHeaders.append("Accept", "application/json");
         myHeaders.append('Authorization', `Bearer ${token}`);
     
         const requestOptions = {
@@ -35,7 +36,8 @@ const MyOrders = () => {
               setOrdersList(res.data);
               setLoading(false);
             } else {
-              setCartList([]);
+              alert('Please Login')
+              setOrdersList([]);
             }
             setLoading(false);
           })
@@ -114,7 +116,7 @@ const MyOrders = () => {
     <View style={{flex:1}}>
         <Loader loading={loading}></Loader>
         <View style={{ flexDirection: 'row', marginTop: '5%', marginLeft: '5%' }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <AntDesign name="arrowleft" size={20} style={{ fontWeight: 'bold',alignSelf:'center' }} color={COLORS.blue} />
         </TouchableOpacity>
         <Text style={{ color: COLORS.blue, fontSize: 20, marginLeft: 50, bottom: 5, fontWeight: 'bold',alignSelf:'center' }}>My Orders</Text>
