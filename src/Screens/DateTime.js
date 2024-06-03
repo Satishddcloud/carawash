@@ -420,7 +420,15 @@ const DateTime = () => {
                 if (loginStatus) {
                   Addtocart(details);
                 } else {
-                  alert('Please Login');
+                  Alert.alert('Login', `Please login.`, [
+                    {
+                      text: 'Cancel',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel',
+                    },
+                    {text: 'OK', onPress: () =>{  navigation.navigate('Login')  }}
+                  ])
+                  refRBSheet.current.close();
                 }
               }}>
               <Text style={{alignSelf: 'center', color: COLORS.white}}>

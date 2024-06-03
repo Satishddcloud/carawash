@@ -214,7 +214,7 @@ const Splash = withGlobalize(
               device_id: `${deviceId}`,
               car_id: 0,
               car_image:
-                'https://testmodel.co.in/carwash/uploads/cars/1714130732.jpg',
+                'https://img.lovepik.com/png/20231001/black-and-white-classic-car-plane-logo-flat-classic-cars_50407_wh1200.png',
             };
             await saveCarData(cardata);
           }

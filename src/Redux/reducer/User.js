@@ -12,7 +12,7 @@ export const UserSlice = createSlice({
       state.login_status = true;
     },
     logout(state, action) {
-      state.userData = {};
+      state.userData = null;
       state.login_status = false;
     },
   },

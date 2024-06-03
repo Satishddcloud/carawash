@@ -46,7 +46,14 @@ const Carts = () => {
           setCartList(res.data);
           setLoading(false);
         } else {
-          alert('Please Login')
+            Alert.alert('Login', `Please login.`, [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+              {text: 'OK', onPress: () =>{  navigation.navigate('Login')  }}
+            ])
           setCartList([]);
         }
         setLoading(false);

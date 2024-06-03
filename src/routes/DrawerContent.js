@@ -7,7 +7,7 @@ import { withGlobalize } from 'react-native-globalize';
 import { memo } from 'react';
 import { saveCarData,  saveUserId, saveUserProfileInfo, setJwtToken } from '../Constants/AsyncStorageHelper';
 import { logout } from '../Redux/reducer/User';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../Constants/Color';
 import { TouchableOpacity } from 'react-native';
 import { color } from 'react-native-reanimated';
@@ -19,14 +19,14 @@ const DrawerContent = withGlobalize(
   memo(props => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
-
+    const loginStatus = useSelector(state => state.User.login_status);
     const logoutUser = async () => {
       const deviceId = await DeviceInfo.getUniqueId();
       const cardata = {
         "selected_car_id": 0,
         "device_id": `${deviceId}`,
           "car_id": 0,
-          "car_image": "https://testmodel.co.in/carwash/uploads/cars/1714130732.jpg"   
+          "car_image": "https://img.lovepik.com/png/20231001/black-and-white-classic-car-plane-logo-flat-classic-cars_50407_wh1200.png"   
     }
       await saveUserId(undefined);
       await saveUserProfileInfo({});
@@ -57,7 +57,7 @@ const DrawerContent = withGlobalize(
               )
             }}
           />
-           <DrawerItem
+           {!loginStatus ? (<DrawerItem
             labelStyle={{ color: COLORS.blue, fontSize: (20), }}
             // icon={() => (
             //   <Entypo
@@ -71,7 +71,7 @@ const DrawerContent = withGlobalize(
               navigation.dispatch(DrawerActions.closeDrawer()
               )
             }}
-          />
+          />):(null)}
             <DrawerItem
             labelStyle={{ color: COLORS.blue, fontSize: (20), }}
             // icon={() => (
@@ -107,7 +107,7 @@ const DrawerContent = withGlobalize(
           
         </DrawerContentScrollView>
         </View>
-        <View style={{bottom:20}}>
+       {loginStatus ? ( <View style={{bottom:20}}>
             <TouchableOpacity style={{padding:10,backgroundColor:COLORS.blue,margin:20,borderRadius:10}}
             onPress={()=>{
               Alert.alert('Logout', `Are you Logout ?`, [
@@ -121,7 +121,7 @@ const DrawerContent = withGlobalize(
             }}>
               <Text style={{alignSelf:'center',color:COLORS.white,fontWeight:'bold'}}>Logout</Text>
             </TouchableOpacity>
-          </View>
+          </View>):(null)}
       </View>
     );
   }),

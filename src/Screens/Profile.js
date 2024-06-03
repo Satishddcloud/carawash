@@ -27,18 +27,18 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Avatar} from 'react-native-paper';
 import {logout} from '../Redux/reducer/User';
 import {useDispatch, useSelector} from 'react-redux';
-import { API_BASE_URL } from '../api/ApiClient';
+import {API_BASE_URL} from '../api/ApiClient';
 import DeviceInfo from 'react-native-device-info';
 
-export const ProfileFormInitialValues = (props,profileRes) => {
- 
-  return{
-  name: profileRes != undefined ? profileRes.name :'',
-  email: profileRes != undefined ? profileRes.email :'',
-  mobile:profileRes != undefined ? (profileRes.mobile) :'',
-  address:profileRes != undefined ? profileRes.address :'',
-  vehicle: profileRes != undefined ? profileRes.vehicle :'',
-}};
+export const ProfileFormInitialValues = (props, profileRes) => {
+  return {
+    name: profileRes != undefined ? profileRes.name : '',
+    email: profileRes != undefined ? profileRes.email : '',
+    mobile: profileRes != undefined ? profileRes.mobile : '',
+    address: profileRes != undefined ? profileRes.address : '',
+    vehicle: profileRes != undefined ? profileRes.vehicle : '',
+  };
+};
 
 export const ProfileFormValidator = () => {
   return yup.object().shape({
@@ -53,21 +53,27 @@ export const ProfileFormValidator = () => {
 const Profile = withGlobalize(
   memo(props => {
     const [loading, setLoading] = useState(false);
-    const isFocused = useIsFocused()
+    const isFocused = useIsFocused();
     const [profileRes1, setProfileRes] = useState();
     const intl = IntlProvider(props);
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const loginStatus = useSelector(state => state.User.login_status);
     const profileRes = useSelector(state => state.User.userData);
-    console.log('profileRes',profileRes)
-    const [name,setName]=useState(profileRes != undefined   ? (profileRes.name) :'')
-    const [email,setEmail]=useState(profileRes != undefined   ? (profileRes.email) :'')
-    const [mobile,setMobile]=useState(profileRes != undefined   ? (profileRes.mobile) :'')
-    const [address,setAddress]=useState('')
-    const [vehicle,setVehicle]=useState('')
-   
+    console.log('profileRes', profileRes, loginStatus);
+    const [name, setName] = useState(
+      profileRes != undefined ? profileRes.name : '',
+    );
+    const [email, setEmail] = useState(
+      profileRes != undefined ? profileRes.email : '',
+    );
+    const [mobile, setMobile] = useState(
+      profileRes != undefined ? profileRes.mobile : '',
+    );
+    const [address, setAddress] = useState('');
+    const [vehicle, setVehicle] = useState('');
+
     useEffect(() => {
-     
       getProfile();
     }, [isFocused]);
 
@@ -113,19 +119,20 @@ const Profile = withGlobalize(
     const Logout = async () => {
       const deviceId = await DeviceInfo.getUniqueId();
       const cardata = {
-        "selected_car_id": 0,
-        "device_id": `${deviceId}`,
-          "car_id": 0,
-          "car_image": "https://testmodel.co.in/carwash/uploads/cars/1714130732.jpg"   
-    }
+        selected_car_id: 0,
+        device_id: `${deviceId}`,
+        car_id: 0,
+        car_image:
+          'https://img.lovepik.com/png/20231001/black-and-white-classic-car-plane-logo-flat-classic-cars_50407_wh1200.png',
+      };
       await saveUserId(undefined);
       await saveUserProfileInfo({});
-      await setJwtToken(null)
-      await saveCarData(cardata)
+      await setJwtToken(null);
+      await saveCarData(cardata);
       dispatch(logout());
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Splash' }],
+        routes: [{name: 'Splash'}],
       });
     };
 
@@ -150,8 +157,6 @@ const Profile = withGlobalize(
             // console.log(res.data)
             const userdata = res.data;
             setProfileRes(userdata);
-           
-           
           }
           setLoading(false);
         })
@@ -245,70 +250,71 @@ const Profile = withGlobalize(
               isValid,
               handleSubmit,
             }) => ( */}
-              <>
-                <View
-                  style={{
-                    alignSelf: 'center',
-                    flex: 1,
-                    marginBottom: 20,
-                    marginTop: 20,
-                  }}>
-                  <Text style={{color: COLORS.black, padding: 10}}>
-                    User Name
-                  </Text>
-                  <TextInput
-                    value={name}
-                    placeholder="Enter User Name"
-                    onChangeText={text => {
-                      setName( text);
-                    }}
-                    style={{
-                      borderRadius: 10,
-                      borderWidth: 1,
-                      borderColor: '#C1C1C1',
-                      margin: 5,
-                      width: 300,
-                      textAlignVertical: 'center',paddingVertical: 10
-                    }}
-                  />
+          <>
+            <View
+              style={{
+                alignSelf: 'center',
+                flex: 1,
+                marginBottom: 20,
+                marginTop: 20,
+              }}>
+              <Text style={{color: COLORS.black, padding: 10}}>User Name</Text>
+              <TextInput
+                value={name}
+                placeholder="Enter User Name"
+                onChangeText={text => {
+                  setName(text);
+                }}
+                style={{
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: '#C1C1C1',
+                  margin: 5,
+                  width: 300,
+                  textAlignVertical: 'center',
+                  paddingVertical: 10,
+                }}
+              />
 
-                  <Text style={{color: COLORS.black, padding: 10}}>Email</Text>
-                  <TextInput
-                    value={`${email}`}
-                    placeholder="Enter email"
-                    onChangeText={text => {
-                       setEmail(text);
-                    }}
-                    style={{
-                      borderRadius: 10,
-                      borderWidth: 1,
-                      borderColor: '#C1C1C1',
-                      margin: 5,
-                      width: 300,
-                      textAlignVertical: 'center',paddingVertical: 10
-                    }}
-                  />
+              <Text style={{color: COLORS.black, padding: 10}}>Email</Text>
+              <TextInput
+                value={`${email != undefined ? email : ''}`}
+                placeholder="Enter email"
+                onChangeText={text => {
+                  setEmail(text);
+                }}
+                style={{
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: '#C1C1C1',
+                  margin: 5,
+                  width: 300,
+                  textAlignVertical: 'center',
+                  paddingVertical: 10,
+                }}
+              />
 
-                  <Text style={{color: COLORS.black, padding: 10}}>
-                    Phone Number
-                  </Text>
-                  <TextInput
-                    value={`${mobile}`}
-                    placeholder="Enter phonenumber"
-                    onChangeText={text => {
-                      setMobile( text);
-                    }}
-                    style={{
-                      borderRadius: 10,
-                      borderWidth: 1,
-                      borderColor: '#C1C1C1',
-                      margin: 5,
-                      width: 300,
-                      textAlignVertical: 'center',paddingVertical: 10
-                    }}
-                  />
+              <Text style={{color: COLORS.black, padding: 10}}>
+                Phone Number
+              </Text>
+              <TextInput
+                value={`${mobile != undefined ? mobile : ''}`}
+                placeholder="Enter phonenumber"
+                onChangeText={text => {
+                  setMobile(text);
+                }}
+                style={{
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: '#C1C1C1',
+                  margin: 5,
+                  width: 300,
+                  textAlignVertical: 'center',
+                  paddingVertical: 10,
+                }}
+              />
 
-                  {/* <Text style={{color: COLORS.black, padding: 10}}>
+              {/* <Text style={{color: COLORS.black, padding: 10}}>
                     Refferal
                   </Text>
                   <TextInput
@@ -326,7 +332,7 @@ const Profile = withGlobalize(
                     }}
                   /> */}
 
-                  {/* <Text style={{color: COLORS.black, padding: 10}}>
+              {/* <Text style={{color: COLORS.black, padding: 10}}>
                     Address
                   </Text>
                   <TextInput
@@ -364,25 +370,34 @@ const Profile = withGlobalize(
                     }}
                   />*/}
 
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: COLORS.blue,
-                      borderRadius: 10,
-                      padding: 10,
-                      width: 300,
-                      alignSelf: 'center',
-                      marginTop: 20,
-                    }}
-                    onPress={() => {
-                      Logout();
-                    }}>
-                    <Text style={{alignSelf: 'center', color: COLORS.white}}>
-                      LogOut{' '}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </>
-            {/* )}
+              {loginStatus ? (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: COLORS.blue,
+                    borderRadius: 10,
+                    padding: 10,
+                    width: 300,
+                    alignSelf: 'center',
+                    marginTop: 20,
+                  }}
+                  onPress={()=>{
+                    Alert.alert('Logout', `Are you Logout ?`, [
+                      {
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                      },
+                      {text: 'OK', onPress: () =>{  Logout()  }}
+                    ])
+                  }}>
+                  <Text style={{alignSelf: 'center', color: COLORS.white}}>
+                    LogOut{' '}
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          </>
+          {/* )}
           </Formik> */}
         </ScrollView>
       </View>

@@ -434,9 +434,14 @@ const Home = () => {
                 <Text style={{color: COLORS.white,alignSelf:'center',}}>Enable Location</Text>
               </TouchableOpacity>
             ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('SelectLocation')
+                }}>
               <Text style={{color: COLORS.white, width: 200, fontSize: 10,alignSelf:'center',}}>
                 {location}
               </Text>
+              </TouchableOpacity>
             )}
           </View>
           </View>
@@ -463,7 +468,7 @@ const Home = () => {
                 style={{padding:5,alignSelf:'center',margin:5,width:50,height:30}}
               />
             <View style={{backgroundColor:COLORS.white,borderRadius:2,padding:2}}>
-              <Text style={{color:COLORS.blue,alignSelf:'center'}}>Wagon R</Text>
+              <Text style={{color:COLORS.blue,alignSelf:'center',fontWeight:'bold'}}>Add Car</Text>
             </View>
             </TouchableOpacity>
           </View>
@@ -514,7 +519,7 @@ const Home = () => {
                renderItem={Item2}
                keyExtractor={item => item.service_id}
              />):(
-             <Text style={{fontWeight:'bold',fontSize:20,color:'black',alignSelf:'center',margin:20}}>No services are Available</Text>
+             <Text style={{fontWeight:'bold',fontSize:20,color:'black',alignSelf:'center',margin:20}}>No Car services are Available</Text>
              )}
              </>
           ):(
@@ -525,7 +530,7 @@ const Home = () => {
             data={services || []}
             renderItem={Item}
             keyExtractor={item => item.service_id}
-            />):(<Text style={{fontWeight:'bold',fontSize:20,color:'black',alignSelf:'center',margin:20}}>No services are Available</Text>)}
+            />):(<Text style={{fontWeight:'bold',fontSize:20,color:'black',alignSelf:'center',margin:20}}>No Car services are Available</Text>)}
             </>
           )}
            

@@ -1,4 +1,4 @@
-import {View, Text,TouchableOpacity,Image, FlatList} from 'react-native';
+import {View, Text,TouchableOpacity,Image, FlatList,Alert} from 'react-native';
 import React,{useState,useEffect} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Loader from '../Components/Loader';
@@ -36,7 +36,14 @@ const MyOrders = () => {
               setOrdersList(res.data);
               setLoading(false);
             } else {
-              alert('Please Login')
+              Alert.alert('Login', `Please login.`, [
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {text: 'OK', onPress: () =>{  navigation.navigate('Login')  }}
+              ])
               setOrdersList([]);
             }
             setLoading(false);
