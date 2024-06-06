@@ -39,7 +39,7 @@ const Splash = withGlobalize(
     const [loading, setLoading] = useState(false);
     const [pincode, setPincode] = useState('');
     console.log('postcode', pincode);
-
+    
     const navigationStep = async () => {
       const userObject = await getUserProfileInfo();
       console.log('userObject', userObject);
@@ -49,6 +49,8 @@ const Splash = withGlobalize(
         } else {
           // navigation.navigate('MainRoute');
           // navigation.navigate('Login');
+          requestLocationPermission();
+
         }
       }, 3000);
     };
@@ -57,7 +59,7 @@ const Splash = withGlobalize(
       navigationStep();
     }, []);
 
-    useEffect(() => {
+    // useEffect(() => {
       const requestLocationPermission = async () => {
         if (Platform.OS === 'ios') {
           getLocation();
@@ -81,8 +83,8 @@ const Splash = withGlobalize(
           }
         }
       };
-      requestLocationPermission();
-    }, []);
+      // requestLocationPermission();
+    // }, []);
 
     //useEffect(() => {
     const checkLocationServices = async () => {
@@ -100,7 +102,7 @@ const Splash = withGlobalize(
             preventBackClick: false,
             providerListener: true,
           });
-        // getLocation();
+        getLocation();
       } catch (error) {
         console.log(error.message);
       }
