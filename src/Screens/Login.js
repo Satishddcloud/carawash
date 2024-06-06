@@ -101,10 +101,11 @@ const Login = withGlobalize(
             const userdata = res.data;
             await saveUserProfileInfo(userdata);
             dispatch(setuser(userdata));
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainRoute'}],
-            });
+            // navigation.reset({
+            //   index: 0,
+            //   routes: [{name: 'MainRoute'}],
+            // });
+            navigation.goBack()
           }
           setLoading(false);
         })

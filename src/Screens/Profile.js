@@ -4,7 +4,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  ScrollView,
+  ScrollView,Alert
 } from 'react-native';
 import React, {useState, memo, useEffect} from 'react';
 import api from '../api';
@@ -72,7 +72,7 @@ const Profile = withGlobalize(
     );
     const [address, setAddress] = useState('');
     const [vehicle, setVehicle] = useState('');
-
+     console.log('name,email,mobile',name,email,mobile)
     useEffect(() => {
       getProfile();
     }, [isFocused]);

@@ -19,6 +19,7 @@ import Loader from '../Components/Loader';
 import {withGlobalize} from 'react-native-globalize';
 import {
   getCarData,
+  getUserId,
   getUserProfileInfo,
   saveCarData,
   saveLocationData,
@@ -26,6 +27,7 @@ import {
 import {API_BASE_URL} from '../api/ApiClient';
 import DeviceInfo from 'react-native-device-info';
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
+import { useSelector } from 'react-redux';
 
 const {width, height} = Dimensions.get('window');
 
@@ -42,17 +44,17 @@ const Splash = withGlobalize(
       const userObject = await getUserProfileInfo();
       console.log('userObject', userObject);
       setTimeout(() => {
-        if (isObject(userObject) && !isNullOrUndefined(userObject.id)) {
+        if (isObject(userObject) && !isNullOrUndefined(userObject.user_id)) {
           navigation.navigate('MainRoute');
         } else {
           // navigation.navigate('MainRoute');
-          navigation.navigate('Login');
+          // navigation.navigate('Login');
         }
       }, 3000);
     };
 
     useEffect(() => {
-      // navigationStep();
+      navigationStep();
     }, []);
 
     useEffect(() => {
@@ -98,7 +100,7 @@ const Splash = withGlobalize(
             preventBackClick: false,
             providerListener: true,
           });
-        getLocation();
+        // getLocation();
       } catch (error) {
         console.log(error.message);
       }
