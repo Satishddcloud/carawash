@@ -204,7 +204,7 @@ const Carts = () => {
         }}>
         My Cart
       </Text> */}
-      {LoginStatus == 'null' && (
+      {LoginStatus != 'true' && (
         <Text
           style={{
             alignSlef: 'center',

@@ -69,7 +69,7 @@ const DrawerContent = withGlobalize(
               )
             }}
           />
-           {LoginStatus == 'null' ? (<DrawerItem
+           {LoginStatus != 'true' ? (<DrawerItem
             labelStyle={{ color: COLORS.blue, fontSize: (20), }}
             // icon={() => (
             //   <Entypo
