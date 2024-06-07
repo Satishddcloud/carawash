@@ -1,11 +1,11 @@
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { View, Text, Alert } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { DrawerActions, useIsFocused, useNavigation } from '@react-navigation/native';
 import { withGlobalize } from 'react-native-globalize';
 import { memo } from 'react';
-import { saveCarData,  saveUserId, saveUserProfileInfo, setJwtToken } from '../Constants/AsyncStorageHelper';
+import { getLoginStatus, saveCarData,  saveLoginStatus,  saveUserId, saveUserProfileInfo, setJwtToken } from '../Constants/AsyncStorageHelper';
 import { logout } from '../Redux/reducer/User';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../Constants/Color';
@@ -19,6 +19,8 @@ const DrawerContent = withGlobalize(
   memo(props => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const isFocused = useIsFocused()
+    const[LoginStatus,setLoginStatus]=useState(false)
     const loginStatus = useSelector(state => state.User.login_status);
     const logoutUser = async () => {
       const deviceId = await DeviceInfo.getUniqueId();
@@ -32,12 +34,22 @@ const DrawerContent = withGlobalize(
       await saveUserProfileInfo({});
       await setJwtToken(null)
       await saveCarData(cardata)
+      await saveLoginStatus(null)
       dispatch(logout());
       navigation.reset({
         index: 0,
         routes: [{ name: 'Splash' }],
       });
     };
+
+     const GetLoginStatus = async ()=>{
+      const loginStatus = await getLoginStatus()
+      setLoginStatus(loginStatus)
+     }
+     useEffect(()=>{
+      GetLoginStatus()
+     },[isFocused])
+
     return (
       <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
         <View style={{flex:1}}>
@@ -57,7 +69,7 @@ const DrawerContent = withGlobalize(
               )
             }}
           />
-           {!loginStatus ? (<DrawerItem
+           {LoginStatus == 'null' ? (<DrawerItem
             labelStyle={{ color: COLORS.blue, fontSize: (20), }}
             // icon={() => (
             //   <Entypo
@@ -107,7 +119,7 @@ const DrawerContent = withGlobalize(
           
         </DrawerContentScrollView>
         </View>
-       {loginStatus ? ( <View style={{bottom:20}}>
+       {LoginStatus == 'true'? ( <View style={{bottom:20}}>
             <TouchableOpacity style={{padding:10,backgroundColor:COLORS.blue,margin:20,borderRadius:10}}
             onPress={()=>{
               Alert.alert('Logout', `Are you Logout ?`, [

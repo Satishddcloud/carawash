@@ -12,8 +12,10 @@ import IntlProvider from '../Constants/IntlProvider';
 import {withGlobalize} from 'react-native-globalize';
 import {
   getJwtToken,
+  getLoginStatus,
   getUserProfileInfo,
   saveCarData,
+  saveLoginStatus,
   saveUserId,
   saveUserProfileInfo,
   setJwtToken,
@@ -55,6 +57,7 @@ const Profile = withGlobalize(
     const [loading, setLoading] = useState(false);
     const isFocused = useIsFocused();
     const [profileRes1, setProfileRes] = useState();
+    const[LoginStatus,setLoginStatus]=useState(false)
     const intl = IntlProvider(props);
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -62,18 +65,19 @@ const Profile = withGlobalize(
     const profileRes = useSelector(state => state.User.userData);
     console.log('profileRes', profileRes, loginStatus);
     const [name, setName] = useState(
-      profileRes != undefined ? profileRes.name : '',
+      profileRes != undefined ? profileRes.name : ''
     );
     const [email, setEmail] = useState(
-      profileRes != undefined ? profileRes.email : '',
+      profileRes != undefined ? profileRes.email : ''
     );
     const [mobile, setMobile] = useState(
-      profileRes != undefined ? profileRes.mobile : '',
+      profileRes != undefined ? profileRes.mobile : ''
     );
     const [address, setAddress] = useState('');
     const [vehicle, setVehicle] = useState('');
      console.log('name,email,mobile',name,email,mobile)
     useEffect(() => {
+
       getProfile();
     }, [isFocused]);
 
@@ -129,14 +133,18 @@ const Profile = withGlobalize(
       await saveUserProfileInfo({});
       await setJwtToken(null);
       await saveCarData(cardata);
+      await saveLoginStatus(null)
       dispatch(logout());
       navigation.reset({
         index: 0,
         routes: [{name: 'Splash'}],
       });
     };
-
+    console.log('loginStatus.',LoginStatus)
     const getProfile = async () => {
+      const loginStatus = await    getLoginStatus()
+      setLoginStatus(loginStatus)
+      
       const token = await getJwtToken();
       setLoading(true);
       const myHeaders = new Headers();
@@ -157,6 +165,9 @@ const Profile = withGlobalize(
             // console.log(res.data)
             const userdata = res.data;
             setProfileRes(userdata);
+            setName(userdata && userdata.name)
+            setEmail(userdata && userdata.email)
+            setMobile(userdata && userdata.mobile)
           }
           setLoading(false);
         })
@@ -370,7 +381,7 @@ const Profile = withGlobalize(
                     }}
                   />*/}
 
-              {loginStatus ? (
+              {LoginStatus == 'true' ? (
                 <TouchableOpacity
                   style={{
                     backgroundColor: COLORS.blue,

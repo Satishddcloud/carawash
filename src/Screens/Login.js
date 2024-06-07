@@ -11,6 +11,7 @@ import api from '../api';
 import IntlProvider from '../Constants/IntlProvider';
 import {withGlobalize} from 'react-native-globalize';
 import {
+  saveLoginStatus,
   saveUserProfileInfo,
   setJwtToken,
 } from '../Constants/AsyncStorageHelper';
@@ -100,6 +101,7 @@ const Login = withGlobalize(
             // console.log(res.data)
             const userdata = res.data;
             await saveUserProfileInfo(userdata);
+            await saveLoginStatus(true)
             dispatch(setuser(userdata));
             // navigation.reset({
             //   index: 0,

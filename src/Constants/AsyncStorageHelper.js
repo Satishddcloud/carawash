@@ -7,6 +7,7 @@ const JWT_TOKEN = 'jwtToken';
 const MOBILE_NUMBER = 'mobile_number';
 const CAR_DATA = 'CarData';
 const LOCATION_DATA = 'location_data'
+const LOGIN_STATUS = 'login_status'
 
 export const saveLanguagePref = async language => {
   await AsyncStorage.setItem(LANGUAGE_PREF, language);
@@ -62,5 +63,11 @@ export const saveLocationData = async locationInfo => {
 export const getLocationData = async () => {
   const userLocationInfo = await AsyncStorage.getItem(LOCATION_DATA);
   return JSON.parse(userLocationInfo);
+};
+export const saveLoginStatus = async loginStatus => {
+  await AsyncStorage.setItem(LOGIN_STATUS, `${loginStatus}`);
+};
+export const getLoginStatus = async () => {
+  return await AsyncStorage.getItem(LOGIN_STATUS);
 };
 

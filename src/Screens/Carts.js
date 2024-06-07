@@ -13,16 +13,17 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Loader from '../Components/Loader';
 import {API_BASE_URL} from '../api/ApiClient';
-import {getJwtToken} from '../Constants/AsyncStorageHelper';
+import {getJwtToken, getLoginStatus} from '../Constants/AsyncStorageHelper';
 import {useSelector} from 'react-redux';
 
 const Carts = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const[LoginStatus,setLoginStatus]=useState(false)
   const [loading, setLoading] = useState(false);
   const [cartList, setCartList] = useState([]);
   const loginStatus = useSelector(state => state.User.login_status);
-  console.log('loginStatus', loginStatus);
+  console.log('loginStatus', loginStatus,LoginStatus);
 
   const getCartList = async () => {
     const token = await getJwtToken();
@@ -46,14 +47,14 @@ const Carts = () => {
           setCartList(res.data);
           setLoading(false);
         } else {
-            Alert.alert('Login', `Please login.`, [
-              {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-              },
-              {text: 'OK', onPress: () =>{  navigation.navigate('Login')  }}
-            ])
+            // Alert.alert('Login', `Please login.`, [
+            //   {
+            //     text: 'Cancel',
+            //     onPress: () => console.log('Cancel Pressed'),
+            //     style: 'cancel',
+            //   },
+            //   {text: 'OK', onPress: () =>{  navigation.navigate('Login')  }}
+            // ])
           setCartList([]);
         }
         setLoading(false);
@@ -93,8 +94,13 @@ const Carts = () => {
         setLoading(false);
       });
   };
+  const GetLoginStatus = async ()=>{
+    const loginStatus = await getLoginStatus()
+    setLoginStatus(loginStatus)
+   }
 
   useEffect(() => {
+    GetLoginStatus()
     getCartList();
   }, [isFocused]);
 
@@ -198,7 +204,7 @@ const Carts = () => {
         }}>
         My Cart
       </Text> */}
-      {!loginStatus && (
+      {LoginStatus == 'null' && (
         <Text
           style={{
             alignSlef: 'center',

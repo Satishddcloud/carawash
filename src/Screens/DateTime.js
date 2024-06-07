@@ -11,12 +11,12 @@ import React, {useState, useRef, useEffect} from 'react';
 import {COLORS} from '../Constants/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-date-picker';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {getJwtToken, getLocationData} from '../Constants/AsyncStorageHelper';
+import {getJwtToken, getLocationData, getLoginStatus} from '../Constants/AsyncStorageHelper';
 import {API_BASE_URL} from '../api/ApiClient';
 import Loader from '../Components/Loader';
 import {DateHelper} from '../Constants/DateHelper';
@@ -26,6 +26,8 @@ const DateTime = () => {
   const route = useRoute();
   const {services, details} = route.params;
   const navigation = useNavigation();
+  const isFocused = useIsFocused()
+  const[LoginStatus,setLoginStatus]=useState(false)
   const loginStatus = useSelector(state => state.User.login_status);
   console.log('loginStatus', loginStatus);
   const [loading, setLoading] = useState(false);
@@ -132,6 +134,14 @@ const DateTime = () => {
         setLoading(false);
       });
   };
+
+  const GetLoginStatus = async ()=>{
+    const loginStatus = await getLoginStatus()
+    setLoginStatus(loginStatus)
+   }
+   useEffect(()=>{
+    GetLoginStatus()
+   },[isFocused])
 
   function formatTimeRange(startHour, endHour) {
     const formatHour = hour => {
@@ -417,7 +427,7 @@ const DateTime = () => {
                 bottom: 10,
               }}
               onPress={() => {
-                if (loginStatus) {
+                if (LoginStatus == 'true') {
                   Addtocart(details);
                 } else {
                   Alert.alert('Login', `Please login.`, [
